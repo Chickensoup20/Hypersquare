@@ -6,6 +6,7 @@ import hypersquare.hypersquare.dev.codefile.CodeFile;
 import hypersquare.hypersquare.dev.codefile.CodeFileHelper;
 import hypersquare.hypersquare.dev.action.Action;
 import hypersquare.hypersquare.item.action.ActionMenuItem;
+import hypersquare.hypersquare.item.action.game.GameActionItems;
 import hypersquare.hypersquare.item.action.player.IfPlayerItems;
 import hypersquare.hypersquare.item.action.player.PlayerActionItems;
 import hypersquare.hypersquare.item.action.player.PlayerEventItems;
@@ -109,7 +110,8 @@ public class CodeblockMenu {
         SET_VARIABLE("set_variable", "Set Variable", "Variables", 5, SetVariableItems.values(), true),
         REPEAT("repeat", "Repeat", "Repeats", 3, RepeatItems.values(), true),
         CONTROL("control", "Control", "Controls", 3, null, true),
-        DEV("dev", "Dev Actions", null, 3, null, true)
+        DEV("dev", "Dev Actions", null, 3, null, true),
+        GAME_ACTION("game_action","Game Action","Game",3,GameActionItems.values(), true)
         ;
 
         public final String id, fullTitle, shortTitle;
