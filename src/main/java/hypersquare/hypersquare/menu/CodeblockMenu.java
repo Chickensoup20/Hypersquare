@@ -111,7 +111,7 @@ public class CodeblockMenu {
         REPEAT("repeat", "Repeat", "Repeats", 3, RepeatItems.values(), true),
         CONTROL("control", "Control", "Controls", 3, null, true),
         DEV("dev", "Dev Actions", null, 3, null, true),
-        GAME_ACTION("game_action","Game Action","Game",3,GameActionItems.values(), true)
+        GAME_ACTION("game_action","Game Action","Game",5,GameActionItems.values(), true)
         ;
 
         public final String id, fullTitle, shortTitle;

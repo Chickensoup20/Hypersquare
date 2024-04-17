@@ -10,7 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import static hypersquare.hypersquare.Hypersquare.cleanMM;
 
 public enum GameActionItems implements ActionMenuItem {
-    BLOCK_MANAGEMENT_CATEGORY(Material.BEDROCK, "<green>Block Manipulation", "<gray>Setting, Copying and modifying blocks", 13);
+    BLOCK_MANAGEMENT_CATEGORY(Material.BEDROCK, "<green>Block Manipulation", "<gray>Setting, Copying and modifying blocks", 13),
+    EVENT_MANIPULATION_CATEGORY(Material.DIAMOND,"<blue>Event Manipulation", "<gray>Cancelling and uncancelling events", 16);
 
     public final Material material;
     public final String name;

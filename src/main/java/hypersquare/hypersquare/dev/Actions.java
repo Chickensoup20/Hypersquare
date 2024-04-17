@@ -4,6 +4,7 @@ import hypersquare.hypersquare.dev.action.Action;
 import hypersquare.hypersquare.dev.action.EmptyAction;
 import hypersquare.hypersquare.dev.code.control.WaitAction;
 import hypersquare.hypersquare.dev.code.dev.PrintStackTraceAction;
+import hypersquare.hypersquare.dev.code.game.GameCancelEventAction;
 import hypersquare.hypersquare.dev.code.game.GameSetRegionAction;
 import hypersquare.hypersquare.dev.code.player.action.*;
 import hypersquare.hypersquare.dev.code.player.condition.IfPlayerHolding;
@@ -43,6 +44,7 @@ public enum Actions implements Action {
     PLAYER_SHOW_TITLE(new PlayerShowTitleAction()),
     IF_PLAYER_HOLDING(new IfPlayerHolding()),
     SET_REGION(new GameSetRegionAction()),
+    CANCEL_EVENT(new GameCancelEventAction()),
 
     // Player Statistics
     SET_PLAYER_HEALTH(PlayerStatEnum.SET_PLAYER_HEALTH.getInstance()),
