@@ -24,13 +24,16 @@ public class HSException extends RuntimeException {
     public HSException(@NotNull CodeErrorType error, Throwable cause) {
         this(List.of(), error.message, cause);
     }
+
     public HSException(CommandSender sender, @NotNull CodeErrorType error) {
         this(List.of(sender), error.message, null);
     }
+
     public HSException(int plotId, @NotNull CodeErrorType error, Throwable cause) {
         //noinspection unchecked
-        this((List<CommandSender>)(List<?>) PlotUtilities.getOnlinePlotDevs(plotId), error.message, cause);
+        this((List<CommandSender>) (List<?>) PlotUtilities.getOnlinePlotDevs(plotId), error.message, cause);
     }
+
     public HSException(List<CommandSender> senders, String msg, Throwable cause) {
         super(msg, cause, false, false);
         this.senders = senders;

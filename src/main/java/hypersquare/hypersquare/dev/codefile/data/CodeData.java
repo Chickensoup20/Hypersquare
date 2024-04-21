@@ -22,14 +22,6 @@ public class CodeData {
         }
     }
 
-    public JsonArray toJson() {
-        JsonArray out = new JsonArray();
-        for (CodeLineData line : codelines) {
-            out.add(line.toJson());
-        }
-        return out;
-    }
-
     public static void parseArgsAndTags(
         @NotNull JsonObject data,
         @NotNull HashMap<String, List<JsonObject>> arguments, @NotNull HashMap<String, Pair<String, VariableValue.HSVar>> tags
@@ -77,10 +69,19 @@ public class CodeData {
             for (Map.Entry<String, Pair<String, VariableValue.HSVar>> entry : tags.entrySet()) {
                 JsonObject tag = new JsonObject();
                 tag.addProperty("value", entry.getValue().getA());
-                if (entry.getValue().getB() != null) tag.add("var", CodeValues.VARIABLE.getVarItemData(entry.getValue().getB()));
+                if (entry.getValue().getB() != null)
+                    tag.add("var", CodeValues.VARIABLE.getVarItemData(entry.getValue().getB()));
                 obj.add(entry.getKey(), tag);
             }
             data.add("tags", obj);
         }
+    }
+
+    public JsonArray toJson() {
+        JsonArray out = new JsonArray();
+        for (CodeLineData line : codelines) {
+            out.add(line.toJson());
+        }
+        return out;
     }
 }

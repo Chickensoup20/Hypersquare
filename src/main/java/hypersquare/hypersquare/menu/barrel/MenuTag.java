@@ -23,9 +23,9 @@ public class MenuTag extends MenuItem {
         this.tag = tag;
 
         name(Component.text("Tag: ")
-                .decoration(TextDecoration.ITALIC, false)
-                .color(Colors.MUSTARD)
-                .append(Component.text(tag.name()))
+            .decoration(TextDecoration.ITALIC, false)
+            .color(Colors.MUSTARD)
+            .append(Component.text(tag.name()))
         );
 
         List<Component> lore = new ArrayList<>();
@@ -45,7 +45,7 @@ public class MenuTag extends MenuItem {
                 .decoration(TextDecoration.BOLD, false)
                 .append(Component.text(" Shift click to remove.")
                     .color(NamedTextColor.GRAY)
-                    .decoration(TextDecoration.BOLD, false ))
+                    .decoration(TextDecoration.BOLD, false))
             );
             lore.add(Component.empty());
         }
@@ -53,17 +53,17 @@ public class MenuTag extends MenuItem {
         for (BarrelTag.Option option : tag.options()) {
             if (option == currentOption(tag, data)) {
                 lore.add(Component.text("» ")
-                        .decoration(TextDecoration.ITALIC, false)
-                        .color(Colors.SKY_DARK)
-                        .append(Component.text(option.text())
-                                .color(Colors.SKY))
+                    .decoration(TextDecoration.ITALIC, false)
+                    .color(Colors.SKY_DARK)
+                    .append(Component.text(option.text())
+                        .color(Colors.SKY))
                 );
             } else {
                 lore.add(Component.text("» ")
-                        .decoration(TextDecoration.ITALIC, false)
-                        .color(Colors.GRAY_DARK)
-                        .append(Component.text(option.text())
-                                .color(Colors.GRAY))
+                    .decoration(TextDecoration.ITALIC, false)
+                    .color(Colors.GRAY_DARK)
+                    .append(Component.text(option.text())
+                        .color(Colors.GRAY))
                 );
             }
         }

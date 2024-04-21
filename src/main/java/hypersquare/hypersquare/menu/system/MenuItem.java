@@ -19,10 +19,10 @@ public class MenuItem {
         ItemMeta meta = item.getItemMeta();
         meta.displayName(Component.text(""));
         meta.addItemFlags(
-                ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ITEM_SPECIFICS,
-                ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_DESTROYS,
-                ItemFlag.HIDE_DYE, ItemFlag.HIDE_ARMOR_TRIM,
-                ItemFlag.HIDE_PLACED_ON
+            ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ITEM_SPECIFICS,
+            ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_DESTROYS,
+            ItemFlag.HIDE_DYE, ItemFlag.HIDE_ARMOR_TRIM,
+            ItemFlag.HIDE_PLACED_ON
         );
 
         item.setItemMeta(meta);

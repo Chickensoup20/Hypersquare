@@ -1,10 +1,10 @@
 package hypersquare.hypersquare.dev.code.player.event;
 
-import hypersquare.hypersquare.dev.action.CancellableEvent;
 import hypersquare.hypersquare.dev.target.Target;
 import hypersquare.hypersquare.item.action.player.PlayerEventItems;
 import hypersquare.hypersquare.item.event.Event;
 import hypersquare.hypersquare.item.event.EventItem;
+import hypersquare.hypersquare.util.color.Colors;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
@@ -34,14 +34,14 @@ public class PlayerBreakItemEvent implements Event {
     @Override
     public ItemStack item() {
         return new EventItem()
-                .setMaterial(Material.COBWEB)
-                .setName(Component.text("Player Break Item Event").color(NamedTextColor.WHITE))
-                .setDescription(
-                        Component.text("Executes code when a player"),
-                        Component.text("breaks an item."))
-                .setCancellable(true)
-                .build()
-                ;
+            .setMaterial(Material.COBWEB)
+            .setName(Component.text("Player Break Item Event").color(Colors.RED_DARK))
+            .setDescription(
+                Component.text("Executes code when a player"),
+                Component.text("breaks an item."))
+            .setCancellable(true)
+            .build()
+            ;
     }
 
     @Override

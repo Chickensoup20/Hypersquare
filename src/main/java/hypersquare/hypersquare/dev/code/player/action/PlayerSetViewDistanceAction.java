@@ -19,35 +19,25 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class PlayerClearInventory implements Action {
-
+public class PlayerSetViewDistanceAction implements Action {
     @Override
     public void execute(@NotNull ExecutionContext ctx, @NotNull CodeSelection targetSel) {
         for (Player p : targetSel.players()) {
-            p.getInventory().clear();
+            int distance = ctx.args().getOr("distance", new DecimalNumber(10, 0)).toInt();
+            p.setViewDistance(Math.clamp(distance, 2, 32));
         }
-    }
-
-    public ItemStack item() {
-        return new ActionItem()
-                .setMaterial(Material.CAULDRON)
-                .setName(Component.text(this.getName()).color(NamedTextColor.RED))
-                .setDescription(Component.text("Clears the inventory of the player."))
-                .setParameters(parameters())
-                .build();
-    }
-
-    @Override
-    public BarrelMenu actionMenu(CodeActionData data) {
-        return new BarrelMenu(this, 3, data);
     }
 
     @Override
     public BarrelParameter[] parameters() {
-        return new BarrelParameter[]{};
+        return new BarrelParameter[]{
+            new BarrelParameter(
+                DisplayValue.NUMBER, false, false, Component.text("Distance in chunks (2-32)"), "distance"),
+            new BarrelParameter(
+                DisplayValue.OR, false, false, Component.empty(), ""),
+            new BarrelParameter(
+                DisplayValue.NONE, false, false, Component.text("(Resets view distance)"), "")
+        };
     }
 
     @Override
@@ -55,8 +45,9 @@ public class PlayerClearInventory implements Action {
         return new BarrelTag[]{};
     }
 
+    @Override
     public String getId() {
-        return "clear_inv";
+        return "set_view_distance";
     }
 
     @Override
@@ -64,17 +55,38 @@ public class PlayerClearInventory implements Action {
         return "player_action";
     }
 
+    @Override
     public String getSignName() {
-        return "ClearInv";
+        return "ViewDistance";
     }
 
     @Override
     public String getName() {
-        return "Clear Inventory";
+        return "Set Player View Distance";
     }
 
     @Override
     public ActionMenuItem getCategory() {
-        return PlayerActionItems.ITEM_MANAGEMENT_CATEGORY;
+        return PlayerActionItems.WORLD_CATEGORY;
+    }
+
+    @Override
+    public ItemStack item() {
+        return new ActionItem()
+            .setMaterial(Material.SPYGLASS)
+            .setName(Component.text("Set View Distance").color(NamedTextColor.YELLOW))
+            .setDescription(Component.text("Sets the view distance"),
+                Component.text("limit for a player."))
+            .addAdditionalInfo(Component.text("The distance cannot exceed the"),
+                Component.text("client's render distance."))
+            .setParameters(parameters())
+            .setTagAmount(tags().length)
+            .build();
+    }
+
+    @Override
+    public BarrelMenu actionMenu(CodeActionData data) {
+        return new BarrelMenu(this, 3, data)
+            .parameter("distance", 13);
     }
 }

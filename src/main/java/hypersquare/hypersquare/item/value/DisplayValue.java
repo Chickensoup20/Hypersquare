@@ -31,6 +31,9 @@ public enum DisplayValue {
     SOUND(null, Colors.BLUE, (_, _) -> false),
     PARTICLE(null, Colors.PURPLE, (_, _) -> false),
     POTION(null, Colors.ROSE_DARK, (_, _) -> false),
+
+    OR(null, Colors.ROSE_DARK, (_, _) -> false, true, "OR"),
+    NONE(null, Colors.GRAY_DARK, (_, _) -> false, true),
     ;
 
     public static final HashMap<DisplayValue, Material> menuPaneColor = new HashMap<>() {{
@@ -54,15 +57,35 @@ public enum DisplayValue {
     public final CodeValues codeVal;
     public final TextColor color;
     private final BiFunction<CodeValues, ItemStack, Boolean> isValid;
+    public final boolean isIndicator;
+    public final String overridenName;
+
+    DisplayValue(@Nullable CodeValues codeVal, TextColor color, BiFunction<CodeValues, ItemStack, Boolean> isValid, boolean isIndicator, String overridenName) {
+        this.codeVal = codeVal;
+        this.color = color;
+        this.isValid = isValid;
+        this.isIndicator = isIndicator;
+        this.overridenName = overridenName;
+    }
+
+    DisplayValue(@Nullable CodeValues codeVal, TextColor color, BiFunction<CodeValues, ItemStack, Boolean> isValid, boolean isIndicator) {
+        this.codeVal = codeVal;
+        this.color = color;
+        this.isValid = isValid;
+        this.isIndicator = isIndicator;
+        this.overridenName = null;
+    }
 
     DisplayValue(@Nullable CodeValues codeVal, TextColor color, BiFunction<CodeValues, ItemStack, Boolean> isValid) {
         this.codeVal = codeVal;
         this.color = color;
         this.isValid = isValid;
+        this.isIndicator = false;
+        this.overridenName = null;
     }
 
     public @NotNull Component getName() {
-        return Component.text(Utilities.capitalize(toString().toLowerCase())).color(color);
+        return Component.text(overridenName == null ? Utilities.capitalize(toString().toLowerCase()) : overridenName).color(color);
     }
 
     public boolean notValid(CodeValues v, @Nullable ItemStack t) {

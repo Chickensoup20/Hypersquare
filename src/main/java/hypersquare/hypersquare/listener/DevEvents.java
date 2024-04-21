@@ -32,7 +32,10 @@ import hypersquare.hypersquare.util.ValueDisplay;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -56,6 +59,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class DevEvents implements Listener {
+
+    public static Location basic = null;
+    public static Location large = null;
+    public static Location huge = null;
+    public static Location massive = null;
+    public static Location gigantic = null;
+    public static Location commonStart = null;
 
     private static void handleCodeblockRClick(@NotNull Block clickedBlock, @NotNull PlayerInteractEvent event) {
         event.setCancelled(true);
@@ -111,10 +121,32 @@ public class DevEvents implements Listener {
         event.getPlayer().playSound(clickedBlock.getLocation(), Sound.BLOCK_BARREL_OPEN, 0.75f, 1);
     }
 
+    private static void setLocation(Player player, Location newLocation) {
+        if (Hypersquare.mode.get(player).equals("building")) {
+            if (player.getInventory().getItemInMainHand().getItemMeta() != null) {
+                if (CodeValues.LOCATION.fromItem(player.getInventory().getItemInMainHand()) != null) {
+                    player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1, 1);
+                    LocationValue.HSLocation locationValue = new LocationValue.HSLocation(new DecimalNumber(newLocation.getX()), new DecimalNumber(newLocation.getY()), new DecimalNumber(newLocation.getZ()), new DecimalNumber(newLocation.getPitch()), new DecimalNumber(newLocation.getYaw()));
+                    ItemStack item = CodeValues.LOCATION.getItem(locationValue);
+                    player.getInventory().setItemInMainHand(item);
+                }
+            }
+        }
+    }
+
+    public static void commonVars() {
+        basic = MoveEntities.basic;
+        large = MoveEntities.large;
+        huge = MoveEntities.huge;
+        massive = MoveEntities.massive;
+        gigantic = MoveEntities.gigantic;
+        commonStart = MoveEntities.commonStart;
+    }
+
     @EventHandler
     public void onInteract(@NotNull PlayerInteractEvent event) {
         Block clickedBlock = event.getClickedBlock();
-        if (clickedBlock == null){
+        if (clickedBlock == null) {
             ValueDisplay.showLocationDisplay(event.getPlayer(), event.getPlayer().getLocation());
             setLocation(event.getPlayer(), event.getPlayer().getLocation());
             return;
@@ -144,7 +176,7 @@ public class DevEvents implements Listener {
                         if (CodeValues.LOCATION.fromItem(player.getInventory().getItemInMainHand()) != null) {
                             event.setCancelled(true);
                             ValueDisplay.showLocationDisplay(event.getPlayer(), event.getClickedBlock().getLocation().add(0.5, 0.5, 0.5));
-                            setLocation(player,event.getClickedBlock().getLocation().add(0.5, 0.5, 0.5));
+                            setLocation(player, event.getClickedBlock().getLocation().add(0.5, 0.5, 0.5));
                         }
                     }
                 }
@@ -152,10 +184,8 @@ public class DevEvents implements Listener {
         }
     }
 
-
-
     @EventHandler
-    public void onChangeSlot(PlayerItemHeldEvent event){
+    public void onChangeSlot(PlayerItemHeldEvent event) {
         Player player = event.getPlayer();
         if (Hypersquare.mode.get(player).equals("building")) {
             if (Hypersquare.locationValueDisplays.containsKey(event.getPlayer())) {
@@ -179,18 +209,6 @@ public class DevEvents implements Listener {
 
             }.runTaskLater(Hypersquare.instance, 3);
 
-        }
-    }
-    private static void setLocation(Player player, Location newLocation){
-        if (Hypersquare.mode.get(player).equals("building")) {
-            if (player.getInventory().getItemInMainHand().getItemMeta() != null) {
-                if (CodeValues.LOCATION.fromItem(player.getInventory().getItemInMainHand()) != null) {
-                    player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1, 1);
-                    LocationValue.HSLocation locationValue = new LocationValue.HSLocation(new DecimalNumber(newLocation.getX()), new DecimalNumber(newLocation.getY()), new DecimalNumber(newLocation.getZ()), new DecimalNumber(newLocation.getPitch()), new DecimalNumber(newLocation.getYaw()));
-                    ItemStack item = CodeValues.LOCATION.getItem(locationValue);
-                    player.getInventory().setItemInMainHand(item);
-                }
-            }
         }
     }
 
@@ -302,22 +320,6 @@ public class DevEvents implements Listener {
         }
     }
 
-    public static Location basic = null;
-    public static Location large = null;
-    public static Location huge = null;
-    public static Location massive = null;
-    public static Location gigantic = null;
-    public static Location commonStart = null;
-
-    public static void commonVars() {
-        basic = MoveEntities.basic;
-        large = MoveEntities.large;
-        huge = MoveEntities.huge;
-        massive = MoveEntities.massive;
-        gigantic = MoveEntities.gigantic;
-        commonStart = MoveEntities.commonStart;
-    }
-
     @EventHandler
     public void onSpread(@NotNull BlockFromToEvent event) {
         commonVars();
@@ -372,7 +374,8 @@ public class DevEvents implements Listener {
 
     @EventHandler
     public void creatureSpawnEvent(@NotNull CreatureSpawnEvent event) {
-        if (event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM && event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.COMMAND) event.setCancelled(true);
+        if (event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.CUSTOM && event.getSpawnReason() != CreatureSpawnEvent.SpawnReason.COMMAND)
+            event.setCancelled(true);
     }
 
     @EventHandler

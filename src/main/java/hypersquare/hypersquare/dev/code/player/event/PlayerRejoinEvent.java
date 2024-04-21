@@ -13,14 +13,14 @@ public class PlayerRejoinEvent implements Event {
 
     public ItemStack item() {
         return new EventItem()
-                .setMaterial(Material.BAKED_POTATO)
-                .setName(Component.text("Player Rejoin Game Event").color(NamedTextColor.YELLOW))
-                .setDescription(Component.text("Executes code when a player"),
-                                Component.text("rejoins the plot using /play"))
-                .addAdditionalInfo(Component.text("This event is triggered"),
-                                   Component.text("before the join event, and"),
-                                   Component.text("after the leave event."))
-                .build();
+            .setMaterial(Material.BAKED_POTATO)
+            .setName(Component.text("Player Rejoin Game Event").color(NamedTextColor.YELLOW))
+            .setDescription(Component.text("Executes code when a player"),
+                Component.text("rejoins the plot using /play"))
+            .addAdditionalInfo(Component.text("This event is triggered"),
+                Component.text("before the join event, and"),
+                Component.text("after the leave event."))
+            .build();
     }
 
     @Override

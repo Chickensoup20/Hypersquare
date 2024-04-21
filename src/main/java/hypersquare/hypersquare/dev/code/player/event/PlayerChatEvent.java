@@ -16,7 +16,7 @@ public class PlayerChatEvent implements CancellableEvent {
             .setMaterial(Material.BOOK)
             .setName(Component.text("Player Chat Event").color(Colors.YELLOW))
             .setDescription(Component.text("Executes code when a player"),
-                            Component.text("sends a message in chat."))
+                Component.text("sends a message in chat."))
             .setCancellable(true)
             .build();
     }

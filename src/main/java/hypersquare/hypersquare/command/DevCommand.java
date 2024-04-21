@@ -27,10 +27,10 @@ public class DevCommand implements HyperCommand {
                 if (PlotDatabase.getRawDevs(plotID).contains(player.getUniqueId().toString())) {
                     ChangeGameMode.devMode(player, plotID);
                 } else {
-                    HSException.sendError(player,"You do not have dev permissions for this plot!");
+                    HSException.sendError(player, "You do not have dev permissions for this plot!");
                 }
             } else {
-                HSException.sendError(player,"You must be on a plot!");
+                HSException.sendError(player, "You must be on a plot!");
             }
         } else {
             sender.sendMessage("This command can only be used by players.");

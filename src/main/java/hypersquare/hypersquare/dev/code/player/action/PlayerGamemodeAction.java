@@ -40,7 +40,7 @@ public class PlayerGamemodeAction implements Action {
                 new BarrelTag.Option(GameMode.SURVIVAL, "Survival", Material.OAK_LOG),
                 new BarrelTag.Option(GameMode.ADVENTURE, "Adventure", Material.GRASS_BLOCK),
                 new BarrelTag.Option(GameMode.SPECTATOR, "Spectator", Material.GLASS)
-                )
+            )
         };
     }
 
@@ -48,6 +48,7 @@ public class PlayerGamemodeAction implements Action {
     public String getId() {
         return "gamemode";
     }
+
     @Override
     public String getCodeblockId() {
         return "player_action";
@@ -71,16 +72,16 @@ public class PlayerGamemodeAction implements Action {
     @Override
     public ItemStack item() {
         return new ActionItem()
-                .setMaterial(Material.GRASS_BLOCK)
-                .setName(Component.text(this.getName()).color(Colors.LIME))
-                .setDescription(Component.text("Sets the gamemode of the player."))
-                .setParameters(parameters())
-                .build();
+            .setMaterial(Material.GRASS_BLOCK)
+            .setName(Component.text(this.getName()).color(Colors.LIME))
+            .setDescription(Component.text("Sets the gamemode of the player."))
+            .setParameters(parameters())
+            .build();
     }
 
     @Override
     public BarrelMenu actionMenu(CodeActionData data) {
         return new BarrelMenu(this, 3, data)
-            .tag("gamemode", 26);
+            .tag("gamemode", 13);
     }
 }

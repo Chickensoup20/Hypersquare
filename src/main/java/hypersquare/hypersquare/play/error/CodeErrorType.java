@@ -17,6 +17,7 @@ public enum CodeErrorType {
 
     public final String message;
     public final boolean sendLoc;
+
     CodeErrorType(String message, boolean sendLoc) {
         this.message = message;
         this.sendLoc = sendLoc;

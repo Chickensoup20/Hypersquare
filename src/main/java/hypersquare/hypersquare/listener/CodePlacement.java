@@ -44,16 +44,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 public class CodePlacement implements Listener {
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onPlayerPlaceBlock(BlockPlaceEvent event) {
-        String mode = Hypersquare.mode.get(event.getPlayer());
-        if (mode.equals("building") || mode.equals("playing")) {
-            if (blockInPlot(event.getBlockPlaced().getLocation())) return;
-            else event.setCancelled(true);
-        }
-        if (Hypersquare.mode.get(event.getPlayer()).equals("coding")) processPlace(event);
-    }
-
     private static boolean checkIfValidAgainst(@NotNull Block againstLocation) {
         Material type = againstLocation.getType();
         return type == Material.STONE || type == Material.PISTON || type == Material.STICKY_PISTON;
@@ -101,55 +91,6 @@ public class CodePlacement implements Listener {
         return true;
     }
 
-
-    public void processPlace(@NotNull BlockPlaceEvent event) {
-        Long cooldown = Hypersquare.cooldownMap.get(event.getPlayer().getUniqueId());
-        if (cooldown == null) cooldown = 0L;
-        event.setCancelled(true);
-        if (cooldown <= System.currentTimeMillis()) {
-            CodeBlocks codeblock = CodeBlocks.getByMaterial(event.getItemInHand().getType());
-            if (codeblock == null) return; // Player placed a block that is not a codeblock
-            Hypersquare.cooldownMap.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 150);
-            Bukkit.getScheduler().runTaskLater(Hypersquare.instance, () -> {
-                Block againstBlock = event.getBlockAgainst();
-                Location location = event.getBlock().getLocation();
-                Player player = event.getPlayer();
-
-                int size = codeblock.hasBrackets ? 3 : 2;
-                if (checkIfValidAgainst(againstBlock)) location = event.getBlockAgainst().getLocation().clone().add(0, 0, 1);
-
-                // Invalid placements
-                if (location.getBlockY() % 6 != 0 ||        // Codeblock on top of codeblock
-                    location.getBlockX() % 3 != 0 ||        // Codelines not spaced 3 blocks apart
-                    (location.getBlockZ() + 1) % 2 != 0     // Codeblocks not spaced 2 blocks apart
-                ) {
-                    HSException.sendError(player, "Invalid block placement.");
-                    return;
-                } else if (codeblock.isThreadStarter && location.getBlockZ() != 1) {
-                    // Thread starter not at the very start
-                    HSException.sendError(player, "Events, Functions, and Processes must be placed at the very start of the code line.");
-                    return;
-                }
-                CodeData code = new CodeFile(event.getPlayer()).getCodeData();
-                if (!codeblock.isThreadStarter) {
-                    if (CodeFileHelper.getCodelineListIndex(location.clone(), code) == -1) {
-                        HSException.sendError(player, "Your code must start with an Event, Function, or Process.");
-                        return;
-                    }
-                }
-
-                if (blockOutsidePlot(CodeBlockManagement.findCodeEnd(location.clone()).add(0, 0, size))) {
-                    HSException.sendError(player, "Your code has reached the end of the plot.");
-                    return;
-                }
-
-                event.setCancelled(false);
-                CodeBlockManagement.moveCodeLine(location.clone(), size);
-                placeBlock(event.getItemInHand(), location, codeblock);
-            }, 2);
-        }
-    }
-
     private static void placeBlock(ItemStack codeblockItem, @NotNull Location location, CodeBlocks codeblock) {
         Location signLocation = location.clone().add(-1, 0, 0);
         CodeFile code = new CodeFile(location.getWorld());
@@ -168,8 +109,7 @@ public class CodePlacement implements Listener {
                 Actions action = Actions.getAction(defaultAction, codeblock.id);
                 if (action != null && action != Actions.EMPTY) {
                     sign.getSide(Side.FRONT).line(1, Component.text(action.getSignName()).color(Colors.WHITE));
-                }
-                else sign.getSide(Side.FRONT).line(1, Component.text("INVALID DEFAULT").color(Colors.RED));
+                } else sign.getSide(Side.FRONT).line(1, Component.text("INVALID DEFAULT").color(Colors.RED));
             }
             sign.update();
             signLocation.getBlock().setBlockData(blockData);
@@ -208,6 +148,65 @@ public class CodePlacement implements Listener {
             BlockData barrelBlockData = barrelLocation.getBlock().getBlockData();
             ((Directional) barrelBlockData).setFacing(BlockFace.UP);
             barrelLocation.getBlock().setBlockData(barrelBlockData);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onPlayerPlaceBlock(BlockPlaceEvent event) {
+        String mode = Hypersquare.mode.get(event.getPlayer());
+        if (mode.equals("building") || mode.equals("playing")) {
+            if (blockInPlot(event.getBlockPlaced().getLocation())) return;
+            else event.setCancelled(true);
+        }
+        if (Hypersquare.mode.get(event.getPlayer()).equals("coding")) processPlace(event);
+    }
+
+    public void processPlace(@NotNull BlockPlaceEvent event) {
+        Long cooldown = Hypersquare.cooldownMap.get(event.getPlayer().getUniqueId());
+        if (cooldown == null) cooldown = 0L;
+        event.setCancelled(true);
+        if (cooldown <= System.currentTimeMillis()) {
+            CodeBlocks codeblock = CodeBlocks.getByMaterial(event.getItemInHand().getType());
+            if (codeblock == null) return; // Player placed a block that is not a codeblock
+            Hypersquare.cooldownMap.put(event.getPlayer().getUniqueId(), System.currentTimeMillis() + 150);
+            Bukkit.getScheduler().runTaskLater(Hypersquare.instance, () -> {
+                Block againstBlock = event.getBlockAgainst();
+                Location location = event.getBlock().getLocation();
+                Player player = event.getPlayer();
+
+                int size = codeblock.hasBrackets ? 3 : 2;
+                if (checkIfValidAgainst(againstBlock))
+                    location = event.getBlockAgainst().getLocation().clone().add(0, 0, 1);
+
+                // Invalid placements
+                if (location.getBlockY() % 6 != 0 ||        // Codeblock on top of codeblock
+                    location.getBlockX() % 3 != 0 ||        // Codelines not spaced 3 blocks apart
+                    (location.getBlockZ() + 1) % 2 != 0     // Codeblocks not spaced 2 blocks apart
+                ) {
+                    HSException.sendError(player, "Invalid block placement.");
+                    return;
+                } else if (codeblock.isThreadStarter && location.getBlockZ() != 1) {
+                    // Thread starter not at the very start
+                    HSException.sendError(player, "Events, Functions, and Processes must be placed at the very start of the code line.");
+                    return;
+                }
+                CodeData code = new CodeFile(event.getPlayer()).getCodeData();
+                if (!codeblock.isThreadStarter) {
+                    if (CodeFileHelper.getCodelineListIndex(location.clone(), code) == -1) {
+                        HSException.sendError(player, "Your code must start with an Event, Function, or Process.");
+                        return;
+                    }
+                }
+
+                if (blockOutsidePlot(CodeBlockManagement.findCodeEnd(location.clone()).add(0, 0, size))) {
+                    HSException.sendError(player, "Your code has reached the end of the plot.");
+                    return;
+                }
+
+                event.setCancelled(false);
+                CodeBlockManagement.moveCodeLine(location.clone(), size);
+                placeBlock(event.getItemInHand(), location, codeblock);
+            }, 2);
         }
     }
 

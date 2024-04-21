@@ -17,10 +17,10 @@ import java.util.List;
 
 public class CodeLineData implements ArgumentsData, TagOptionsData, BarrelParamSupplier, BarrelTagSupplier {
 
-    public int position;
-    private final HashMap<String, List<JsonObject>> arguments = new HashMap<>();
     public final List<CodeActionData> actions = new ArrayList<>();
+    private final HashMap<String, List<JsonObject>> arguments = new HashMap<>();
     private final HashMap<String, Pair<String, VariableValue.HSVar>> tags = new HashMap<>();
+    public int position;
     public String type, event;
 
     public CodeLineData() {

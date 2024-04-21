@@ -12,13 +12,13 @@ import org.bukkit.inventory.ItemStack;
 public class PlayerPlaceBlockEvent implements CancellableEvent {
     @Override
     public ItemStack item() {
-         return new EventItem()
+        return new EventItem()
             .setName(Component.text("Player Place Block Event").color(Colors.SKY))
             .setDescription(
                 Component.text("Executes code when a player"),
                 Component.text("places a block."))
             .setMaterial(Material.GRASS_BLOCK)
-             .setCancellable(true)
+            .setCancellable(true)
             .build();
     }
 

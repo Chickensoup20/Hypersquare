@@ -20,7 +20,7 @@ public enum Target {
     DEFAULT_PLAYER(PlayerEvent.class, TargetType.PLAYER, "Default Player", Material.POTATO, Colors.GREEN_LIGHT,
         "The player that triggered\nthe event.", (PlayerEvent e, CodeSelection _) -> of(e.getPlayer())),
     @SuppressWarnings("") ALL_PLAYERS(PlayerEvent.class, TargetType.PLAYER, "All Players", Material.BEACON, Colors.SKY_LIGHT,
-        "Every player on this plot.", (PlayerEvent e, CodeSelection _) -> new CodeSelection((List<Entity>)(List<?>) e.getPlayer().getWorld().getPlayers())),
+        "Every player on this plot.", (PlayerEvent e, CodeSelection _) -> new CodeSelection((List<Entity>) (List<?>) e.getPlayer().getWorld().getPlayers())),
     DEFAULT_ENTITY(EntityEvent.class, TargetType.ENTITY, "Default Entity", Material.POTATO, Colors.GREEN_LIGHT,
         "The entity that triggered\nthe event.", (EntityEvent e, CodeSelection _) -> of(e.getEntity())),
     ALL_ENTITIES(Event.class, TargetType.ENTITY, "All Entities", Material.DIAMOND_BLOCK, Colors.SKY_LIGHT,
@@ -43,7 +43,9 @@ public enum Target {
         "The projectile in this event.", (EntityEvent e, CodeSelection _) -> {
         try {
             return of((Projectile) e.getEntity());
-        } catch (Exception ignored) { return null; }
+        } catch (Exception ignored) {
+            return null;
+        }
     }),
     VICTIM(EntityDamageEvent.class, "Victim", Material.SKELETON_SKULL, Colors.BLUE_LIGHT,
         "The entity that was damaged\nor killed in this event.", (EntityDamageEvent e, CodeSelection _) -> of(e.getEntity())),
@@ -61,6 +63,26 @@ public enum Target {
 
     ;
 
+    public final Class<? extends Event> eventType;
+    public final String[] description;
+    public final TextColor color;
+    public final Material mat;
+    public final String name;
+    public final TargetType targetType;
+    private final TargetGetter getter;
+    Target(Class<? extends Event> e, TargetType u, String n, Material m, TextColor c, String d, TargetGetter<? extends Event> g) {
+        this.description = d.split("\\R");
+        this.eventType = e;
+        this.targetType = u;
+        this.getter = g;
+        this.color = c;
+        this.name = n;
+        this.mat = m;
+    }
+    Target(Class<? extends Event> e, String n, Material m, TextColor c, String d, TargetGetter<? extends Event> g) {
+        this(e, TargetType.ALL, n, m, c, d, g);
+    }
+
     public static Target getTarget(String name) {
         for (Target t : Target.values()) {
             if (t.name().equals(name) || t.name.equals(name)) return t;
@@ -72,30 +94,9 @@ public enum Target {
         return new CodeSelection(entities);
     }
 
-    public final Class<? extends Event> eventType;
-    private final TargetGetter getter;
-    public final String[] description;
-    public final TextColor color;
-    public final Material mat;
-    public final String name;
-    public final TargetType targetType;
-
-    Target(Class<? extends Event> e, TargetType u, String n, Material m, TextColor c, String d, TargetGetter<? extends Event> g) {
-        this.description = d.split("\\R");
-        this.eventType = e;
-        this.targetType = u;
-        this.getter = g;
-        this.color = c;
-        this.name = n;
-        this.mat = m;
-    }
-
-    Target(Class<? extends Event> e, String n, Material m, TextColor c, String d, TargetGetter<? extends Event> g) {
-        this(e, TargetType.ALL, n, m, c, d, g);
-    }
-
     public <T extends Event> CodeSelection get(T event, CodeSelection s) {
-        if (!eventType.isAssignableFrom(event.getClass())) throw new RuntimeException(event.getClass().getName()+" class is not compatible with target "+name+" ("+eventType.getName()+")");
+        if (!eventType.isAssignableFrom(event.getClass()))
+            throw new RuntimeException(event.getClass().getName() + " class is not compatible with target " + name + " (" + eventType.getName() + ")");
         //noinspection unchecked
         return getter.get(eventType.cast(event), s);
     }

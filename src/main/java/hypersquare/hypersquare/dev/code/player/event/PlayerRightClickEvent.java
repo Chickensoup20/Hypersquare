@@ -12,14 +12,14 @@ import org.bukkit.inventory.ItemStack;
 public class PlayerRightClickEvent implements CancellableEvent {
     public ItemStack item() {
         return new EventItem()
-                .setMaterial(Material.DIAMOND_PICKAXE)
-                .setName(Component.text("Player Right Click Event").color(NamedTextColor.AQUA))
-                .setDescription(
-                        Component.text("Executes code when a player"),
-                        Component.text("right clicks while looking at a"),
-                        Component.text("block or holding an item."))
-                .setCancellable(true)
-                .build();
+            .setMaterial(Material.DIAMOND_PICKAXE)
+            .setName(Component.text("Player Right Click Event").color(NamedTextColor.AQUA))
+            .setDescription(
+                Component.text("Executes code when a player"),
+                Component.text("right clicks while looking at a"),
+                Component.text("block or holding an item."))
+            .setCancellable(true)
+            .build();
     }
 
     @Override

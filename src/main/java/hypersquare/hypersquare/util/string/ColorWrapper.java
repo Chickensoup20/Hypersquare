@@ -8,7 +8,15 @@ public class ColorWrapper {
         return Component.text(number).color(DisplayValue.NUMBER.color);
     }
 
-    public Component number (int number) { return number(String.valueOf(number)); }
-    public Component number (float number) { return number(String.valueOf(number)); }
-    public Component number (double number) { return number(String.valueOf(number)); }
+    public Component number(int number) {
+        return number(String.valueOf(number));
+    }
+
+    public Component number(float number) {
+        return number(String.valueOf(number));
+    }
+
+    public Component number(double number) {
+        return number(String.valueOf(number));
+    }
 }

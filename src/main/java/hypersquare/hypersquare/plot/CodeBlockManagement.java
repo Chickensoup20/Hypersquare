@@ -46,8 +46,8 @@ public class CodeBlockManagement {
     public static Location findCodeEnd(@NotNull Location location) {
         while (
             location.clone().add(0, 0, 1).getBlock().getType() != Material.AIR ||
-            location.clone().add(0, 0, 2).getBlock().getType() != Material.AIR ||
-            location.clone().getBlock().getType() != Material.AIR
+                location.clone().add(0, 0, 2).getBlock().getType() != Material.AIR ||
+                location.clone().getBlock().getType() != Material.AIR
         ) {
             location.add(0, 0, 1);
         }
@@ -60,7 +60,7 @@ public class CodeBlockManagement {
 
         Region region = new CuboidRegion(
             world,
-            BlockVector3.at(copyLoc.getBlockX(),copyLoc.getBlockY(),copyLoc.getBlockZ()),
+            BlockVector3.at(copyLoc.getBlockX(), copyLoc.getBlockY(), copyLoc.getBlockZ()),
             BlockVector3.at(endLoc.getBlockX(), endLoc.getBlockY(), endLoc.getBlockZ())
         );
         BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
@@ -76,9 +76,9 @@ public class CodeBlockManagement {
 
         try (EditSession editSession = WorldEdit.getInstance().newEditSession(world)) {
             Operation operation = new ClipboardHolder(clipboard)
-                    .createPaste(editSession)
-                    .to(region.getMinimumPoint().add(0, 0, amount))
-                    .build();
+                .createPaste(editSession)
+                .to(region.getMinimumPoint().add(0, 0, amount))
+                .build();
 
             Operations.complete(operation);
         }

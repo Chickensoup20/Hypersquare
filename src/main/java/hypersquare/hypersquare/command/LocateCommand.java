@@ -42,9 +42,8 @@ public class LocateCommand implements HyperCommand {
 
     private void locatePlayer(CommandContext<CommandSourceStack> ctx, Player target) {
         CommandSender self = ctx.getSource().getBukkitSender();
-        if (target == null)
-        {
-            HSException.sendError(self,"This player is not online.");
+        if (target == null) {
+            HSException.sendError(self, "This player is not online.");
             return;
         }
         String color = "<#AAD4FF>";

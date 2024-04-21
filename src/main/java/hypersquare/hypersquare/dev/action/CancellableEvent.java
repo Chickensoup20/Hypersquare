@@ -8,6 +8,7 @@ public interface CancellableEvent extends Event {
     default void cancelEvent(@NotNull Cancellable bukkitEvent) {
         bukkitEvent.setCancelled(true);
     }
+
     default void uncancelEvent(@NotNull Cancellable bukkitEvent) {
         bukkitEvent.setCancelled(false);
     }

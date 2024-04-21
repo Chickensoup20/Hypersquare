@@ -61,18 +61,18 @@ public class RepeatMultiple implements RepeatAction {
     @Override
     public ItemStack item() {
         return new ActionItem()
-                .setMaterial(Material.PRISMARINE_SHARD)
-                .setName(Component.text("Repeat Multiple Times").color(NamedTextColor.DARK_AQUA))
-                .setDescription(Component.text("Repeats the code a"),
-                        Component.text("certain number of times."))
-                .setParameters(parameters())
-                .build();
+            .setMaterial(Material.PRISMARINE_SHARD)
+            .setName(Component.text("Repeat Multiple Times").color(NamedTextColor.DARK_AQUA))
+            .setDescription(Component.text("Repeats the code a"),
+                Component.text("certain number of times."))
+            .setParameters(parameters())
+            .build();
     }
 
     @Override
     public BarrelMenu actionMenu(CodeActionData data) {
         return new BarrelMenu(this, 3, data)
-                .parameter("amount", 13);
+            .parameter("amount", 13);
     }
 
     @Override

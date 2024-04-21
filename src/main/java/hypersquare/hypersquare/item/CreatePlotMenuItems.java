@@ -38,9 +38,9 @@ public enum CreatePlotMenuItems {
         }
 
         return new ItemBuilder(material)
-                .name(cleanMM.deserialize(color + name))
-                .lore(list)
-                .hideFlags()
-                .build();
+            .name(cleanMM.deserialize(color + name))
+            .lore(list)
+            .hideFlags()
+            .build();
     }
 }

@@ -19,15 +19,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 public class PlayerSetRotationAction implements Action {
     @Override
     public void execute(@NotNull ExecutionContext ctx, @NotNull CodeSelection targetSel) {
         for (Player p : targetSel.players()) {
             DecimalNumber pitch = ctx.args().<DecimalNumber>allNonNull("pitch").getFirst();
             DecimalNumber yaw = ctx.args().<DecimalNumber>allNonNull("yaw").getFirst();
-            p.setRotation(yaw.toFloat(),pitch.toFloat());
+            p.setRotation(yaw.toFloat(), pitch.toFloat());
 
         }
     }
@@ -35,8 +33,8 @@ public class PlayerSetRotationAction implements Action {
     @Override
     public BarrelParameter[] parameters() {
         return new BarrelParameter[]{
-            new BarrelParameter(DisplayValue.NUMBER,false,false,Component.text("Pitch (-90 to 90)"),"pitch"),
-            new BarrelParameter(DisplayValue.NUMBER,false,false,Component.text("Yaw (-180 to 180)"),"yaw"),
+            new BarrelParameter(DisplayValue.NUMBER, false, false, Component.text("Pitch (-90 to 90)"), "pitch"),
+            new BarrelParameter(DisplayValue.NUMBER, false, false, Component.text("Yaw (-180 to 180)"), "yaw"),
         };
     }
 

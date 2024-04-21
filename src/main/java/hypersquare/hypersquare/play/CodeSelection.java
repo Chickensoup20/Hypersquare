@@ -31,6 +31,7 @@ public class CodeSelection {
 
     /**
      * All players in the selection
+     *
      * @return selection of players
      */
     public List<Player> players() {
@@ -43,6 +44,7 @@ public class CodeSelection {
 
     /**
      * All entities except players in the selection
+     *
      * @return selection of entities
      */
     public List<Entity> noPlayers() {
@@ -55,6 +57,7 @@ public class CodeSelection {
 
     /**
      * All entities of a certain type in the selection
+     *
      * @param type type of entity
      * @return selection of the given type
      */

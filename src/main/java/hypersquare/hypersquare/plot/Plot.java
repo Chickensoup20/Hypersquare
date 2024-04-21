@@ -49,21 +49,21 @@ public class Plot {
         }
         List<Component> lore = new ArrayList<>();
         lore.add(MiniMessage.miniMessage()
-                .deserialize("<dark_gray>" + PlotDatabase.getPlotSize(plotID) + " Plot")
-                .decoration(TextDecoration.ITALIC, false));
+            .deserialize("<dark_gray>" + PlotDatabase.getPlotSize(plotID) + " Plot")
+            .decoration(TextDecoration.ITALIC, false));
         lore.add(MiniMessage.miniMessage().deserialize(""));
         lore.add(MiniMessage.miniMessage().deserialize(""));
         lore.add(MiniMessage.miniMessage()
-                .deserialize("<dark_gray>ID: " + plotID)
-                .decoration(TextDecoration.ITALIC, false));
+            .deserialize("<dark_gray>ID: " + plotID)
+            .decoration(TextDecoration.ITALIC, false));
         if (Hypersquare.PLOT_VERSION == PlotDatabase.getPlotVersion(plotID)) {
             lore.add(MiniMessage.miniMessage()
-                    .deserialize("<dark_gray>Plot version: " + PlotDatabase.getPlotVersion(plotID))
-                    .decoration(TextDecoration.ITALIC, false));
+                .deserialize("<dark_gray>Plot version: " + PlotDatabase.getPlotVersion(plotID))
+                .decoration(TextDecoration.ITALIC, false));
         } else {
             Component aa = MiniMessage.miniMessage()
-                    .deserialize("<red>Plot version: " + PlotDatabase.getPlotVersion(plotID))
-                    .decoration(TextDecoration.ITALIC, false);
+                .deserialize("<red>Plot version: " + PlotDatabase.getPlotVersion(plotID))
+                .decoration(TextDecoration.ITALIC, false);
             lore.add(aa);
         }
 
@@ -157,8 +157,10 @@ public class Plot {
                                 try {
                                     plugin.loadWorld(world);
                                 } catch (Exception e) {
-                                    if (e instanceof UnknownWorldException) HSException.sendError(player, "That plot is vacant.");
-                                    if (e instanceof NullPointerException) HSException.sendError(player, "Cannot find the world.");
+                                    if (e instanceof UnknownWorldException)
+                                        HSException.sendError(player, "That plot is vacant.");
+                                    if (e instanceof NullPointerException)
+                                        HSException.sendError(player, "Cannot find the world.");
                                 }
                                 Utilities.getWorldDataFromSlimeWorlds(player.getWorld());
                             }

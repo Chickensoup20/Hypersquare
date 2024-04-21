@@ -98,8 +98,7 @@ public class CodeExecutor {
                 if (action != null && action.a instanceof CallbackAfterAction cb) {
                     execute(cb::after, action, trace, frame, data);
                 }
-            }
-            else {
+            } else {
                 Action action = Actions.getAction(data.action, data.codeblock);
                 if (action == null) {
                     throw new HSException(CodeErrorType.INVALID_ACT, new NullPointerException("CodeActionData is invalid?"));
@@ -112,14 +111,20 @@ public class CodeExecutor {
 
     private void execute(RunFunction run, Action action, CodeStacktrace trace, CodeStacktrace.Frame frame, CodeActionData data) {
         ExecutionContext ctx;
-        try { ctx = getCtx(action, trace, data); } catch (Exception e) {
+        try {
+            ctx = getCtx(action, trace, data);
+        } catch (Exception e) {
             throw new HSException(CodeErrorType.FAILED_CONTEXT, e);
         }
         CodeSelection targetSel;
-        try { targetSel = getTargetSel(data.target, action, trace, frame.selection); } catch (Exception e) {
+        try {
+            targetSel = getTargetSel(data.target, action, trace, frame.selection);
+        } catch (Exception e) {
             throw new HSException(CodeErrorType.FAILED_TARGET, e);
         }
-        try { run.invoke(ctx, targetSel); } catch (Exception e) {
+        try {
+            run.invoke(ctx, targetSel);
+        } catch (Exception e) {
             throw new HSException(CodeErrorType.INTERNAL_ERROR, e);
         }
     }
@@ -132,11 +137,14 @@ public class CodeExecutor {
             if (type == null) return selection; // codeblock can't be targeted, preserve original selection
             TargetSet set = TargetPriority.ofType(type);
             for (Target t : set.targets()) {
-                try { targetSel = t.get(trace.bukkitEvent, selection); } catch (Exception ignored) {}
+                try {
+                    targetSel = t.get(trace.bukkitEvent, selection);
+                } catch (Exception ignored) {
+                }
             }
-            if (targetSel == null) throw new NullPointerException("Couldn't find any target prioritization for " + codeblock);
-        }
-        else targetSel = Objects.requireNonNull(Target.getTarget(target)).get(trace.bukkitEvent, selection);
+            if (targetSel == null)
+                throw new NullPointerException("Couldn't find any target prioritization for " + codeblock);
+        } else targetSel = Objects.requireNonNull(Target.getTarget(target)).get(trace.bukkitEvent, selection);
         return targetSel;
     }
 
@@ -144,7 +152,7 @@ public class CodeExecutor {
         HashMap<String, List<JsonObject>> arguments = new HashMap<>();
         for (hypersquare.hypersquare.dev.BarrelParameter param : action.parameters()) {
             List<JsonObject> args = data.getArguments().getOrDefault(param.id(), List.of());
-            if (args.isEmpty() && !param.optional()) throw new HSException(CodeErrorType.MISSING_PARAM, null);
+            if (!param.type().isIndicator && args.isEmpty() && !param.optional()) throw new HSException(CodeErrorType.MISSING_PARAM, null);
             arguments.put(param.id(), args);
         }
         ActionArguments args = new ActionArguments(arguments);
@@ -154,21 +162,28 @@ public class CodeExecutor {
     }
 
     public class EventRunnable {
+    private interface RunFunction {
+        void invoke(ExecutionContext ctx, CodeSelection targetSel);
+    }
+
+    public class EventRunnable extends BukkitRunnable {
         private final CodeStacktrace trace;
+
         EventRunnable(CodeStacktrace trace) {
             this.trace = trace;
         }
+
+        @Override
         public void run() {
             trace.halt = false;
-            try { continueEval(trace); } catch (Exception e) {
+            try {
+                continueEval(trace);
+            } catch (Exception e) {
                 new HSException(plotId, CodeErrorType.RUNTIME_ERROR, e).sendMessage();
             }
             running.remove(trace.event, this);
         }
     }
-
-    private interface RunFunction {
-        void invoke(ExecutionContext ctx, CodeSelection targetSel);
-    }
+}
 }
 

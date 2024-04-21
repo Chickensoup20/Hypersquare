@@ -33,25 +33,25 @@ public class TextValue implements CodeValue<TextValue.HSTextComp, Component> {
 
     @Override
     public HSTextComp defaultValue() {
-        return new HSTextComp(false,"");
+        return new HSTextComp(false, "");
     }
 
     @Override
     public List<Component> getDescription() {
         return List.of(
-                BasicComponent.gray("Text with extra formatting via"),
-                Hypersquare.cleanMM.deserialize("<!italic><white>MiniMessage</white> <gray>tags such as <white>\\<color></white>."),
-                BasicComponent.gray("Recommended for text displayed"),
-                BasicComponent.gray("through chat, item names, and others.")
+            BasicComponent.gray("Text with extra formatting via"),
+            Hypersquare.cleanMM.deserialize("<!italic><white>MiniMessage</white> <gray>tags such as <white>\\<color></white>."),
+            BasicComponent.gray("Recommended for text displayed"),
+            BasicComponent.gray("through chat, item names, and others.")
         );
     }
 
     @Override
     public List<Component> getHowToSet() {
-        return List.of (
-                BasicComponent.gray("Type in chat while holding"),
-                BasicComponent.gray("this item."),
-                Hypersquare.cleanMM.deserialize("<!italic><gray>E.g. '<white>\\<rainbow>Rainbow text!</white>'")
+        return List.of(
+            BasicComponent.gray("Type in chat while holding"),
+            BasicComponent.gray("this item."),
+            Hypersquare.cleanMM.deserialize("<!italic><gray>E.g. '<white>\\<rainbow>Rainbow text!</white>'")
         );
     }
 
@@ -99,18 +99,19 @@ public class TextValue implements CodeValue<TextValue.HSTextComp, Component> {
     public Component realValue(HSTextComp value) {
         if (!value.isLegacy) {
             return Hypersquare.fullMM.deserialize(value.value)
-                    .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
+                .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
         } else {
             return LegacyComponentSerializer.legacyAmpersand().deserialize(value.value)
-                    .colorIfAbsent(NamedTextColor.WHITE)
-                    .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
+                .colorIfAbsent(NamedTextColor.WHITE)
+                .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
         }
     }
 
     @Override
     public JsonObject serialize(Object obj) {
         if (obj instanceof HSTextComp comp) return getVarItemData(comp);
-        if (obj instanceof Component comp) return getVarItemData(new HSTextComp(false, Hypersquare.fullMM.serialize(comp)));
+        if (obj instanceof Component comp)
+            return getVarItemData(new HSTextComp(false, Hypersquare.fullMM.serialize(comp)));
         return null;
     }
 
@@ -122,14 +123,14 @@ public class TextValue implements CodeValue<TextValue.HSTextComp, Component> {
         meta.displayName(realValue(comp));
 
         List<Component> lore = List.of(
-                !comp.isLegacy ? BasicComponent.create("Expression:")
-                        : BasicComponent.create("Expression ")
-                            .append(Component.text("(LEGACY)")
-                                .color(NamedTextColor.GRAY)
-                            )
-                            .append(Component.text(":")
-                        ),
-                BasicComponent.gray(comp.value)
+            !comp.isLegacy ? BasicComponent.create("Expression:")
+                : BasicComponent.create("Expression ")
+                .append(Component.text("(LEGACY)")
+                    .color(NamedTextColor.GRAY)
+                )
+                .append(Component.text(":")
+                ),
+            BasicComponent.gray(comp.value)
         );
 
         meta.lore(lore);
@@ -137,5 +138,6 @@ public class TextValue implements CodeValue<TextValue.HSTextComp, Component> {
         return item;
     }
 
-    public record HSTextComp(boolean isLegacy, String value) {}
+    public record HSTextComp(boolean isLegacy, String value) {
+    }
 }

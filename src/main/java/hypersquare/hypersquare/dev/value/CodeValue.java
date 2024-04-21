@@ -24,26 +24,47 @@ import java.util.List;
  */
 public interface CodeValue<T, S> {
     Component getName();
+
     Material getMaterial();
+
     String getTypeId();
+
     List<Component> getDescription();
+
     List<Component> getHowToSet();
+
     JsonObject getVarItemData(T type);
-    default boolean isUnsetable() { return false; }
+
+    default boolean isUnsetable() {
+        return false;
+    }
+
     default Component getValueName(T value) { // Defaults to the CodeValue's name
         return getName().decoration(TextDecoration.ITALIC, false);
     }
 
-    default void onRightClick(Player player, T value) {}
-    default void onLeftClick(Player player, T value) {}
-    default void onShiftRightClick(Player player, T value) {}
-    default void onShiftLeftClick(Player player, T value) {}
+    default void onRightClick(Player player, T value) {
+    }
+
+    default void onLeftClick(Player player, T value) {
+    }
+
+    default void onShiftRightClick(Player player, T value) {
+    }
+
+    default void onShiftLeftClick(Player player, T value) {
+    }
 
     T fromJson(JsonObject obj);
+
     T defaultValue();
+
     T fromString(String data, T previous);
+
     S realValue(T value);
+
     JsonObject serialize(Object obj);
+
     default boolean isType(JsonObject d) {
         try {
             return d.get("type").getAsString().equals(getTypeId());
@@ -81,9 +102,9 @@ public interface CodeValue<T, S> {
         JsonObject obj = getVarItemData(value);
         obj.addProperty("type", getTypeId());
         meta.getPersistentDataContainer().set(
-                new NamespacedKey(Hypersquare.pluginName, "varitem"),
-                PersistentDataType.STRING,
-                obj.toString()
+            new NamespacedKey(Hypersquare.pluginName, "varitem"),
+            PersistentDataType.STRING,
+            obj.toString()
         );
 
         item.setItemMeta(meta);
@@ -94,14 +115,15 @@ public interface CodeValue<T, S> {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return null;
         String varItemData = meta.getPersistentDataContainer().get(
-                new NamespacedKey(Hypersquare.pluginName, "varitem"),
-                PersistentDataType.STRING
+            new NamespacedKey(Hypersquare.pluginName, "varitem"),
+            PersistentDataType.STRING
         );
         if (varItemData == null) return null;
 
         try {
             JsonObject value = JsonParser.parseString(varItemData).getAsJsonObject();
-            if (!value.get("type").getAsString().equals(getTypeId())) throw new IllegalArgumentException("Invalid fromItem call.");
+            if (!value.get("type").getAsString().equals(getTypeId()))
+                throw new IllegalArgumentException("Invalid fromItem call.");
             return fromJson(value);
         } catch (Exception err) {
             return null;

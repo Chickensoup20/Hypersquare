@@ -42,16 +42,16 @@ public class VariableValue implements CodeValue<VariableValue.HSVar, CodeVariabl
     @Override
     public List<Component> getDescription() {
         return List.of(
-                BasicComponent.gray("Variables can be used in expressions"),
-                BasicComponent.gray("to refer to other values.")
+            BasicComponent.gray("Variables can be used in expressions"),
+            BasicComponent.gray("to refer to other values.")
         );
     }
 
     @Override
     public List<Component> getHowToSet() {
         return List.of(
-                BasicComponent.gray("Type in chat while holding"),
-                BasicComponent.gray("this item to change its name."),
+            BasicComponent.gray("Type in chat while holding"),
+            BasicComponent.gray("this item to change its name."),
             BasicComponent.gray("Right-click to open the scope"),
             BasicComponent.gray("menu, Shift + Right-click to switch"),
             BasicComponent.gray("between scopes. Add -l -t -g or -s to the"),
@@ -81,8 +81,8 @@ public class VariableValue implements CodeValue<VariableValue.HSVar, CodeVariabl
     @Override
     public HSVar fromJson(JsonObject obj) {
         return new HSVar(
-                obj.get("name").getAsString(),
-                Scope.valueOf(obj.get("scope").getAsString())
+            obj.get("name").getAsString(),
+            Scope.valueOf(obj.get("scope").getAsString())
         );
     }
 
@@ -197,8 +197,8 @@ public class VariableValue implements CodeValue<VariableValue.HSVar, CodeVariabl
         ItemStack item = CodeValue.super.getItem(value);
         ItemMeta meta = item.getItemMeta();
         meta.lore(List.of(Component.text(value.scope.name())
-                .color(value.scope.color)
-                .decoration(TextDecoration.ITALIC, false)));
+            .color(value.scope.color)
+            .decoration(TextDecoration.ITALIC, false)));
         item.setItemMeta(meta);
         return item;
     }
@@ -213,7 +213,6 @@ public class VariableValue implements CodeValue<VariableValue.HSVar, CodeVariabl
         return null;
     }
 
-    public record HSVar(String name, Scope scope) {}
     public enum Scope {
         GLOBAL(Colors.GREEN_LIGHT, "G"),
         THREAD(Colors.AQUA_LIGHT, "T"),
@@ -228,5 +227,8 @@ public class VariableValue implements CodeValue<VariableValue.HSVar, CodeVariabl
             this.color = color;
             this.letter = letter;
         }
+    }
+
+    public record HSVar(String name, Scope scope) {
     }
 }

@@ -4,6 +4,7 @@ import hypersquare.hypersquare.dev.target.Target;
 import hypersquare.hypersquare.item.action.player.PlayerEventItems;
 import hypersquare.hypersquare.item.event.Event;
 import hypersquare.hypersquare.item.event.EventItem;
+import hypersquare.hypersquare.util.color.Colors;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
@@ -33,14 +34,14 @@ public class PlayerItemDamageEvent implements Event {
     @Override
     public ItemStack item() {
         return new EventItem()
-                .setMaterial(Material.SHELTER_POTTERY_SHERD)
-                .setName(Component.text("Player Damage Item Event").color(NamedTextColor.WHITE))
-                .setDescription(
-                        Component.text("Executes code when a player"),
-                        Component.text("damages an item."))
-                .setCancellable(false)
-                .build()
-                ;
+            .setMaterial(Material.SHELTER_POTTERY_SHERD)
+            .setName(Component.text("Player Damage Item Event").color(Colors.RED_LIGHT))
+            .setDescription(
+                Component.text("Executes code when a player"),
+                Component.text("damages an item."))
+            .setCancellable(false)
+            .build()
+            ;
     }
 
     @Override

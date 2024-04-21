@@ -37,6 +37,7 @@ public class PlayerChangeSlotEvent implements CancellableEvent {
     public String getSignName() {
         return "ChangeSlot";
     }
+
     @Override
     public PlayerEventItems getCategory() {
         return PlayerEventItems.CLICK_EVENTS_CATEGORY;

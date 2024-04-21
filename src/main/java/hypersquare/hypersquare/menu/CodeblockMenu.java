@@ -2,9 +2,9 @@ package hypersquare.hypersquare.menu;
 
 import hypersquare.hypersquare.dev.Actions;
 import hypersquare.hypersquare.dev.Events;
+import hypersquare.hypersquare.dev.action.Action;
 import hypersquare.hypersquare.dev.codefile.CodeFile;
 import hypersquare.hypersquare.dev.codefile.CodeFileHelper;
-import hypersquare.hypersquare.dev.action.Action;
 import hypersquare.hypersquare.item.action.ActionMenuItem;
 import hypersquare.hypersquare.item.action.game.GameActionItems;
 import hypersquare.hypersquare.item.action.player.IfPlayerItems;
@@ -113,11 +113,12 @@ public class CodeblockMenu {
         DEV("dev", "Dev Actions", null, 3, null, true),
         GAME_ACTION("game_action","Game Action","Game",5,GameActionItems.values(), true)
         ;
-
+    
         public final String id, fullTitle, shortTitle;
         public final int rows;
         public final ActionMenuItem[] items;
         public final boolean actions;
+
         Menus(String id, String fullTitle, String shortTitle, int rows, ActionMenuItem[] items, boolean actions) {
             this.id = id;
             this.fullTitle = fullTitle;

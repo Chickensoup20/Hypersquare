@@ -16,7 +16,7 @@ public class WorldUtilities {
     public static void cloneWorld(String templateName, String newName, Consumer<SlimeWorld> callback) {
         new Thread(() -> {
             SlimePropertyMap properties = new SlimePropertyMap();
-            properties.setValue(SlimeProperties.DIFFICULTY,"easy");
+            properties.setValue(SlimeProperties.DIFFICULTY, "easy");
             SlimeWorld world;
             SlimeLoader file = Hypersquare.slimePlugin.getLoader("mongodb");
 

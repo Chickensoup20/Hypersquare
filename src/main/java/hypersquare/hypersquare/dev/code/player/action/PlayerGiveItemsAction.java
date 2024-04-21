@@ -39,7 +39,7 @@ public class PlayerGiveItemsAction implements Action {
             item.setAmount(amount);
             items.add(item);
         }
-        
+
         for (Player p : targetSel.players()) {
             for (ItemStack item : items) {
                 p.getInventory().addItem(item);
@@ -49,22 +49,22 @@ public class PlayerGiveItemsAction implements Action {
 
     public ItemStack item() {
         return new ActionItem()
-                .setMaterial(Material.CHEST)
-                .setName(Component.text(this.getName()).color(NamedTextColor.GREEN))
-                .setDescription(Component.text("Gives the player all of the"),
-                        Component.text("items in the barrel"))
-                .setParameters(parameters())
-                .addAdditionalInfo(Component.text("This is the first action"),
-                        Component.text("we added!"))
-                .setEnchanted(true)
-                .build();
+            .setMaterial(Material.CHEST)
+            .setName(Component.text(this.getName()).color(NamedTextColor.GREEN))
+            .setDescription(Component.text("Gives the player all of the"),
+                Component.text("items in the barrel"))
+            .setParameters(parameters())
+            .addAdditionalInfo(Component.text("This is the first action"),
+                Component.text("we added!"))
+            .setEnchanted(true)
+            .build();
     }
 
     @Override
     public BarrelMenu actionMenu(CodeActionData data) {
         return new BarrelMenu(this, 4, data)
-                .parameter("items", 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26)
-                .parameter("multiplier", 35);
+            .parameter("items", 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26)
+            .parameter("multiplier", 35);
     }
 
     @Override

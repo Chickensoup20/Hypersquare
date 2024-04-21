@@ -50,6 +50,7 @@ public class PlayerTeleportAction implements Action {
     public String getId() {
         return "teleport";
     }
+
     @Override
     public String getCodeblockId() {
         return "player_action";

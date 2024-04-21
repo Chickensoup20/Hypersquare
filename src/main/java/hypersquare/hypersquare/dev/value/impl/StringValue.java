@@ -36,18 +36,18 @@ public class StringValue implements CodeValue<String, String> {
     @Override
     public List<Component> getDescription() {
         return List.of(
-                BasicComponent.gray("A series of characters which"),
-                BasicComponent.gray("is highly manipulatable."),
-                BasicComponent.gray("Recommended for variable"),
-                BasicComponent.gray("operations")
+            BasicComponent.gray("A series of characters which"),
+            BasicComponent.gray("is highly manipulatable."),
+            BasicComponent.gray("Recommended for variable"),
+            BasicComponent.gray("operations")
         );
     }
 
     public List<Component> getHowToSet() {
         return List.of(
-                BasicComponent.gray("Type in chat while holding"),
-                BasicComponent.gray("this item."),
-                Hypersquare.cleanMM.deserialize("<!italic><gray>E.g. '<white>Sample Text</white>'")
+            BasicComponent.gray("Type in chat while holding"),
+            BasicComponent.gray("this item."),
+            Hypersquare.cleanMM.deserialize("<!italic><gray>E.g. '<white>Sample Text</white>'")
         );
     }
 
@@ -72,7 +72,7 @@ public class StringValue implements CodeValue<String, String> {
     @Override
     public Component getValueName(String value) {
         return Component.text(value).color(NamedTextColor.WHITE)
-                .decoration(TextDecoration.ITALIC, false);
+            .decoration(TextDecoration.ITALIC, false);
     }
 
     @Override

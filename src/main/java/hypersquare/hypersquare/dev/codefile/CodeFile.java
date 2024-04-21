@@ -36,7 +36,7 @@ public record CodeFile(World world, int plotId) {
         JsonArray array = JsonParser.parseString(code).getAsJsonArray();
 
         if (!array.isJsonNull() && !array.isEmpty()) return new CodeData(array);
-            else return new CodeData(new JsonArray());
+        else return new CodeData(new JsonArray());
     }
 
     public String getCode() {

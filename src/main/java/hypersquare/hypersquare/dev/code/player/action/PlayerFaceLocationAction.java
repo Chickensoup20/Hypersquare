@@ -4,7 +4,6 @@ import hypersquare.hypersquare.dev.BarrelParameter;
 import hypersquare.hypersquare.dev.BarrelTag;
 import hypersquare.hypersquare.dev.action.Action;
 import hypersquare.hypersquare.dev.codefile.data.CodeActionData;
-import hypersquare.hypersquare.dev.value.type.DecimalNumber;
 import hypersquare.hypersquare.item.action.ActionItem;
 import hypersquare.hypersquare.item.action.ActionMenuItem;
 import hypersquare.hypersquare.item.action.player.PlayerActionItems;
@@ -14,14 +13,11 @@ import hypersquare.hypersquare.play.CodeSelection;
 import hypersquare.hypersquare.play.execution.ExecutionContext;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class PlayerFaceLocationAction implements Action {
     @Override
@@ -39,7 +35,7 @@ public class PlayerFaceLocationAction implements Action {
     @Override
     public BarrelParameter[] parameters() {
         return new BarrelParameter[]{
-            new BarrelParameter(DisplayValue.LOCATION,false,false, Component.text("Location to face"),"location"),
+            new BarrelParameter(DisplayValue.LOCATION, false, false, Component.text("Location to face"), "location"),
         };
     }
 

@@ -80,7 +80,8 @@ public class PlotDatabase {
                     ZipInputStream zipStream = new ZipInputStream(byteStream);
                     ZipEntry zipEntry = zipStream.getNextEntry();
                     boolean mkdirsSuccess = Path.of("plugins/FastAsyncWorldEdit/schematics").toFile().mkdirs();
-                    if (!mkdirsSuccess) Hypersquare.logger().warning("Couldn't create directory 'plugins/FastAsyncWorldEdit/schematics'!");
+                    if (!mkdirsSuccess)
+                        Hypersquare.logger().warning("Couldn't create directory 'plugins/FastAsyncWorldEdit/schematics'!");
                     while (zipEntry != null) {
                         Files.copy(zipStream, Path.of(schematicsPath + zipEntry.getName()));
                         zipEntry = zipStream.getNextEntry();
@@ -112,9 +113,9 @@ public class PlotDatabase {
 
                 try (EditSession editSession = WorldEdit.getInstance().newEditSession(FaweAPI.getWorld(world.getName()))) {
                     Operation operation = new ClipboardHolder(clipboard)
-                            .createPaste(editSession)
-                            .to(BlockVector3.at(0, 0, 0))
-                            .build();
+                        .createPaste(editSession)
+                        .to(BlockVector3.at(0, 0, 0))
+                        .build();
                     Operations.complete(operation);
                 }
 
@@ -130,16 +131,16 @@ public class PlotDatabase {
 
     public static void addPlot(int plotID, String ownerUUID, String icon, String name, int node, String tags, int votes, String size, int version) {
         Document plotDocument = new Document("plotID", plotID)
-                .append("owner", ownerUUID)
-                .append("devs", ownerUUID) // Consider using an array for devs and builders
-                .append("builders", ownerUUID) // Consider using an array for devs and builders
-                .append("icon", icon)
-                .append("name", name)
-                .append("node", node)
-                .append("tags", tags)
-                .append("votes", votes)
-                .append("size", size)
-                .append("version", version);
+            .append("owner", ownerUUID)
+            .append("devs", ownerUUID) // Consider using an array for devs and builders
+            .append("builders", ownerUUID) // Consider using an array for devs and builders
+            .append("icon", icon)
+            .append("name", name)
+            .append("node", node)
+            .append("tags", tags)
+            .append("votes", votes)
+            .append("size", size)
+            .append("version", version);
         plotsCollection.insertOne(plotDocument);
     }
 
@@ -231,7 +232,7 @@ public class PlotDatabase {
                 double yaw = spawnLocationDoc.getDouble("yaw");
                 double pitch = spawnLocationDoc.getDouble("pitch");
 
-                return new Location(world, x, y, z,(float) yaw,(float) pitch);
+                return new Location(world, x, y, z, (float) yaw, (float) pitch);
             }
         }
 
@@ -241,14 +242,14 @@ public class PlotDatabase {
     public static void setPlotSpawnLocation(int plotID, Location spawnLocation) {
         Document filter = new Document("plotID", plotID);
         Document update = new Document("$set",
-                new Document("spawnLocation",
-                        new Document("world", spawnLocation.getWorld().getName())
-                                .append("x", spawnLocation.getX())
-                                .append("y", spawnLocation.getY())
-                                .append("z", spawnLocation.getZ())
-                                .append("yaw", spawnLocation.getYaw())
-                                .append("pitch", spawnLocation.getPitch())
-                )
+            new Document("spawnLocation",
+                new Document("world", spawnLocation.getWorld().getName())
+                    .append("x", spawnLocation.getX())
+                    .append("y", spawnLocation.getY())
+                    .append("z", spawnLocation.getZ())
+                    .append("yaw", spawnLocation.getYaw())
+                    .append("pitch", spawnLocation.getPitch())
+            )
         );
 
         plotsCollection.updateOne(filter, update);

@@ -38,14 +38,14 @@ public class EventItem {
     public EventItem addAdditionalInfo(Component @NotNull ... info) {
         List<Component[]> infoList = new ArrayList<>(additionalInfo);
         info[0] = Component.text("⏵")
-                .color(NamedTextColor.BLUE)
-                .append(Component.text(" ")
-                        .color(NamedTextColor.GRAY)
-                        .append(info[0]
-                                .color(NamedTextColor.GRAY)));
+            .color(NamedTextColor.BLUE)
+            .append(Component.text(" ")
+                .color(NamedTextColor.GRAY)
+                .append(info[0]
+                    .color(NamedTextColor.GRAY)));
         for (int i = 1; i < info.length; i++) {
             info[i] = info[i].color(NamedTextColor.GRAY)
-                    .decoration(TextDecoration.ITALIC, false);
+                .decoration(TextDecoration.ITALIC, false);
         }
         infoList.add(info);
         this.additionalInfo = infoList;
@@ -57,7 +57,7 @@ public class EventItem {
         return this;
     }
 
-    public ItemStack build () {
+    public ItemStack build() {
         ItemStack eventItem = new ItemStack(material);
         ItemMeta meta = eventItem.getItemMeta();
         List<Component> lore = new ArrayList<>(List.of());
@@ -85,10 +85,10 @@ public class EventItem {
         if (cancellable) {
             lore.add(Component.empty());
             lore.add(Component.text("∅").decoration(TextDecoration.ITALIC, false)
-                            .color(Colors.RED_DARK)
-                    .append(Component.text(" Cancellable")
-                            .color(Colors.RED)
-                    )
+                .color(Colors.RED_DARK)
+                .append(Component.text(" Cancellable")
+                    .color(Colors.RED)
+                )
             );
         }
 

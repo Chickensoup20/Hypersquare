@@ -22,10 +22,10 @@ public enum CodeValues implements CodeValue {
     TEXT(new TextValue()),
     ITEM(new ItemValue()),
     VARIABLE(new VariableValue()),
-    LOCATION(new LocationValue())
-    ;
+    LOCATION(new LocationValue());
 
     private final CodeValue v;
+
     CodeValues(CodeValue v) {
         this.v = v;
     }
@@ -39,6 +39,25 @@ public enum CodeValues implements CodeValue {
             }
         }
         return null;
+    }
+
+    public static CodeValues getType(JsonObject obj) {
+        for (CodeValues v : CodeValues.values()) {
+            if (v.isType(obj)) return v;
+        }
+        return null;
+    }
+
+    public static JsonObject getVarItemData(ItemStack item) {
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return null;
+        String data = meta.getPersistentDataContainer().get(new NamespacedKey(Hypersquare.pluginName, "varitem"), PersistentDataType.STRING);
+        if (data == null) return null;
+        try {
+            return JsonParser.parseString(data).getAsJsonObject();
+        } catch (Exception ignored) {
+            return null;
+        }
     }
 
     @Override
@@ -70,6 +89,7 @@ public enum CodeValues implements CodeValue {
     public JsonObject getVarItemData(Object type) {
         return v.getVarItemData(type);
     }
+
     public boolean isUnsetable() {
         return v.isUnsetable();
     }
@@ -121,23 +141,6 @@ public enum CodeValues implements CodeValue {
     @Override
     public Object realValue(Object value) {
         return v.realValue(value);
-    }
-
-    public static CodeValues getType(JsonObject obj) {
-        for (CodeValues v : CodeValues.values()) {
-            if (v.isType(obj)) return v;
-        }
-        return null;
-    }
-
-    public static JsonObject getVarItemData(ItemStack item) {
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) return null;
-        String data = meta.getPersistentDataContainer().get(new NamespacedKey(Hypersquare.pluginName, "varitem"), PersistentDataType.STRING);
-        if (data == null) return null;
-        try {
-            return JsonParser.parseString(data).getAsJsonObject();
-        } catch (Exception ignored) { return null; }
     }
 
     @Override

@@ -15,13 +15,14 @@ import java.util.List;
 public class Menu {
 
     public static final HashMap<Player, Menu> openMenus = new HashMap<>();
-    private final Inventory inventory;
     public final HashMap<Integer, MenuItem> items = new HashMap<>();
+    private final Inventory inventory;
 
     /**
      * Creates a new menu
+     *
      * @param title Inventory title
-     * @param rows Amount of rows (1-6)
+     * @param rows  Amount of rows (1-6)
      */
     public Menu(Component title, int rows) {
         inventory = Bukkit.createInventory(null, rows * 9, title);
@@ -29,6 +30,7 @@ public class Menu {
 
     /**
      * Sets an item in the menu
+     *
      * @param slot Slot to set item in
      * @param item Item to set
      * @return {@link Menu}
@@ -41,9 +43,10 @@ public class Menu {
 
     /**
      * Sets all the items in a menu
-     * @implNote Menu items don't clear before this
+     *
      * @param items Items to set
      * @return {@link Menu}
+     * @implNote Menu items don't clear before this
      */
     public Menu items(@NotNull List<MenuItem> items) {
         for (int i = 0; i < items.size(); i++) {
@@ -54,6 +57,7 @@ public class Menu {
 
     /**
      * Gets the inventory size of the menu
+     *
      * @return Inventory size
      */
     public int getSize() {
@@ -78,6 +82,7 @@ public class Menu {
 
     /**
      * Runs the click event for the item in the specified slot
+     *
      * @param event The event that caused this.
      */
     public void performClick(@NotNull InventoryClickEvent event) {

@@ -60,18 +60,18 @@ public class AssignVariableAction implements Action {
     @Override
     public ItemStack item() {
         return new ActionItem()
-                .setMaterial(Material.IRON_INGOT)
-                .setName(Component.text("Assign Variable").color(NamedTextColor.WHITE))
-                .setDescription(Component.text("Assigns a value to a variable."))
-                .setParameters(parameters())
-                .build();
+            .setMaterial(Material.IRON_INGOT)
+            .setName(Component.text("Assign Variable").color(NamedTextColor.WHITE))
+            .setDescription(Component.text("Assigns a value to a variable."))
+            .setParameters(parameters())
+            .build();
     }
 
     @Override
     public BarrelMenu actionMenu(CodeActionData data) {
         return new BarrelMenu(this, 3, data)
-                .parameter("variable",12)
-                .parameter("value", 14);
+            .parameter("variable", 12)
+            .parameter("value", 14);
     }
 
     @Override

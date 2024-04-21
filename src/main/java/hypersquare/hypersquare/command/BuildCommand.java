@@ -16,7 +16,7 @@ public class BuildCommand implements HyperCommand {
         cd.register(literal("b").executes(this::run));
     }
 
-    private int run(CommandContext<CommandSourceStack> ctx){
+    private int run(CommandContext<CommandSourceStack> ctx) {
         CommandSender sender = ctx.getSource().getBukkitSender();
         if (sender instanceof Player player) {
             int plotID = PlotUtilities.getPlotId(player.getWorld());

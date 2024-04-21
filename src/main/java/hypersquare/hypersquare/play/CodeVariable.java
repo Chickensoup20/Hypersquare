@@ -10,16 +10,18 @@ public class CodeVariable {
     public final String name;
     public final VariableValue.Scope scope;
     private ExecutionContext ctx;
+
     public CodeVariable(String name, VariableValue.Scope scope) {
         this.name = name;
         this.scope = scope;
     }
 
-    public void setJson(JsonObject value) {
-        ctx.getScope(scope).set(name, value);
-    }
     public JsonObject getJson() {
         return ctx.getScope(scope).get(name);
+    }
+
+    public void setJson(JsonObject value) {
+        ctx.getScope(scope).set(name, value);
     }
 
     @SuppressWarnings("unchecked")

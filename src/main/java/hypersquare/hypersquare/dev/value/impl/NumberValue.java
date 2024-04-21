@@ -34,21 +34,22 @@ public class NumberValue implements CodeValue<Long, DecimalNumber> {
     public Long defaultValue() {
         return 0L;
     }
+
     @Override
     public List<Component> getDescription() {
         return List.of(
-                BasicComponent.gray("Represents a number of an"),
-                BasicComponent.gray("integer or a decimal. It can"),
-                BasicComponent.gray("have up to 6 decimal places.")
+            BasicComponent.gray("Represents a number of an"),
+            BasicComponent.gray("integer or a decimal. It can"),
+            BasicComponent.gray("have up to 6 decimal places.")
         );
     }
 
     @Override
     public List<Component> getHowToSet() {
         return List.of(
-                BasicComponent.gray("Type in chat while holding"),
-                BasicComponent.gray("this item."),
-                Hypersquare.cleanMM.deserialize("<!italic><gray>E.g. <white>4</white> or <white>1.25</white>")
+            BasicComponent.gray("Type in chat while holding"),
+            BasicComponent.gray("this item."),
+            Hypersquare.cleanMM.deserialize("<!italic><gray>E.g. <white>4</white> or <white>1.25</white>")
         );
     }
 
@@ -82,7 +83,7 @@ public class NumberValue implements CodeValue<Long, DecimalNumber> {
     @Override
     public Component getValueName(Long value) {
         return Component.text(new DecimalNumber(0, value).toString()).color(NamedTextColor.RED)
-                .decoration(TextDecoration.ITALIC, false);
+            .decoration(TextDecoration.ITALIC, false);
     }
 
     @Override

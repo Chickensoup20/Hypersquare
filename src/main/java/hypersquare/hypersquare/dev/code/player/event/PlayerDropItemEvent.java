@@ -33,14 +33,14 @@ public class PlayerDropItemEvent implements CancellableEvent {
     @Override
     public ItemStack item() {
         return new EventItem()
-                .setMaterial(Material.SUGAR)
-                .setName(Component.text("Player Drop Item Event").color(NamedTextColor.WHITE))
-                .setDescription(
-                        Component.text("Executes code when a player"),
-                        Component.text("drops an item."))
-                .setCancellable(true)
-                .build()
-                ;
+            .setMaterial(Material.SUGAR)
+            .setName(Component.text("Player Drop Item Event").color(NamedTextColor.YELLOW))
+            .setDescription(
+                Component.text("Executes code when a player"),
+                Component.text("drops an item."))
+            .setCancellable(true)
+            .build()
+            ;
     }
 
     @Override

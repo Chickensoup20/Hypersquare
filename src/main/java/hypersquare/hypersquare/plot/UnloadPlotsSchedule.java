@@ -6,7 +6,6 @@ import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 public class UnloadPlotsSchedule {
@@ -22,10 +21,10 @@ public class UnloadPlotsSchedule {
             World buildWorld = Bukkit.getWorld("hs." + plotId);
             World devWorld = Bukkit.getWorld("hs.code." + plotId);
 
-            if(buildWorld != null && buildWorld.getPlayerCount() <= 0 && devWorld != null && devWorld.getPlayerCount() <= 0) {
+            if (buildWorld != null && buildWorld.getPlayerCount() <= 0 && devWorld != null && devWorld.getPlayerCount() <= 0) {
                 if (
                     Hypersquare.gameUnloadTimestamp.containsKey(plotId)
-                     && System.currentTimeMillis() - Hypersquare.gameUnloadTimestamp.get(plotId) < 1000 * 60 * 2) {
+                        && System.currentTimeMillis() - Hypersquare.gameUnloadTimestamp.get(plotId) < 1000 * 60 * 2) {
                     continue;
                 }
                 Hypersquare.gameUnloadTimestamp.remove(plotId);
@@ -41,6 +40,7 @@ public class UnloadPlotsSchedule {
 
     /**
      * Tries to game-unload the plot, should be called on leave events
+     *
      * @param plotId Plot ID to unload
      */
     public static void tryGameUnload(int plotId) {
@@ -60,6 +60,6 @@ public class UnloadPlotsSchedule {
                 CodeExecutor executor = Hypersquare.codeExecMap.get(plotId);
                 if (executor != null) executor.halt();
             },
-        1);
+            1);
     }
 }

@@ -13,6 +13,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.entity.HorseJumpEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -244,18 +246,58 @@ public class PlayModeListener implements Listener {
         if (cannotExecute(p)) return;
         PlotUtilities.getExecutor(p).trigger(Events.PLAYER_BREAK_ITEM_EVENT, event, new CodeSelection(p));
     }
+
     @EventHandler
     public void playerDamageItemEvent(@NotNull PlayerItemDamageEvent event) {
         Player p = event.getPlayer();
         if (cannotExecute(p)) return;
         PlotUtilities.getExecutor(p).trigger(Events.PLAYER_DAMAGE_ITEM_EVENT, event, new CodeSelection(p));
     }
+
     @EventHandler
     public void playerMendItemEvent(@NotNull PlayerItemMendEvent event) {
         Player p = event.getPlayer();
         if (cannotExecute(p)) return;
         PlotUtilities.getExecutor(p).trigger(Events.PLAYER_MEND_ITEM_EVENT, event, new CodeSelection(p));
+
     }
+
+    @EventHandler
+    public void playerRespawnEvent(@NotNull PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
+        if (cannotExecute(player)) return;
+        CodeExecutor executor = PlotUtilities.getExecutor(player);
+        executor.trigger(Events.PLAYER_RESPAWN_EVENT, event, new CodeSelection(player));
+    }
+
+    @EventHandler
+    public void entityTakeDamageEvent(@NotNull EntityDamageEvent event) {
+        if (event.getEntity() instanceof Player player) {
+            if (cannotExecute(player)) return;
+            CodeExecutor executor = PlotUtilities.getExecutor(player);
+            executor.trigger(Events.PLAYER_TAKE_DAMAGE_EVENT, event, new CodeSelection(player));
+        }
+    }
+
+    @EventHandler
+    public void entityDamageEntityEvent(@NotNull EntityDamageByEntityEvent event) {
+        CodeExecutor executor;
+        if (event.getDamager() instanceof Player player) {
+            if (cannotExecute(player)) return;
+            executor = PlotUtilities.getExecutor(player);
+            if (event.getEntity() instanceof Player victim) {
+                executor.trigger(Events.PLAYER_DAMAGE_PLAYER_EVENT, event, new CodeSelection(player));
+            } else {
+                System.out.println("victim is not player");
+                executor.trigger(Events.PLAYER_DAMAGE_ENTITY_EVENT, event, new CodeSelection(player));
+            }
+        } else if (event.getEntity() instanceof Player victim) {
+            if (cannotExecute(victim)) return;
+            executor = PlotUtilities.getExecutor(victim);
+            executor.trigger(Events.ENTITY_DAMAGE_PLAYER_EVENT, event, new CodeSelection(victim));
+        }
+    }
+
     // TODO: Close Inventory
     // TODO: Fish Event
 

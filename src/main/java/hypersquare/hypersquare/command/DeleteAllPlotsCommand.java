@@ -29,7 +29,7 @@ public class DeleteAllPlotsCommand implements HyperCommand {
                 sender.sendMessage("taking a big dump");
                 for (Player player1 : Bukkit.getOnlinePlayers()) {
                     player1.kick(Component.text("Kick from Hypersquare\n").color(NamedTextColor.RED).decoration(TextDecoration.BOLD, true)
-                            .append(Component.text("Reason: massive dump").color(NamedTextColor.WHITE).decoration(TextDecoration.BOLD, false))
+                        .append(Component.text("Reason: massive dump").color(NamedTextColor.WHITE).decoration(TextDecoration.BOLD, false))
                     );
                 }
                 MongoDatabase database = Hypersquare.mongoClient.getDatabase(DB_NAME);

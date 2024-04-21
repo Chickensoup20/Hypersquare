@@ -58,6 +58,7 @@ public class PlayerNumericalStatTemplate implements Action {
     public String getId() {
         return name.replace("Set", "").replace(" ", "_").toLowerCase();
     }
+
     @Override
     public String getCodeblockId() {
         return "player_action";

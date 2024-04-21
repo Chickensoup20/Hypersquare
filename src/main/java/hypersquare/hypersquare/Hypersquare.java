@@ -25,7 +25,10 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -53,12 +56,8 @@ public final class Hypersquare extends JavaPlugin {
     public static final HashMap<UUID, Long> cooldownMap = new HashMap<>();
     // Code execution - Contains each plot's code execution instance
     public static final HashMap<Integer, CodeExecutor> codeExecMap = new HashMap<>();
-    // Displayed locations - Contains current location display per player
-    public static HashMap<Player,UUID> locationValueDisplays = new HashMap<>();
-
     public static final int PLOT_VERSION = 5;
     public static final Random RANDOM = new Random(PLOT_VERSION * 12345L);
-
     public static final MiniMessage cleanMM = MiniMessage.builder()
         .tags(TagResolver.resolver(
             StandardTags.decorations(), StandardTags.color(), StandardTags.font(),
@@ -73,6 +72,8 @@ public final class Hypersquare extends JavaPlugin {
         )).build();
     public static final String pluginName = "hypersquare";
     public static final MiniMessage fullMM = MiniMessage.miniMessage();
+    // Displayed locations - Contains current location display per player
+    public static HashMap<Player, UUID> locationValueDisplays = new HashMap<>();
     public static String DB_PASS;
     public static String DB_NAME;
     public static MongoClient mongoClient;

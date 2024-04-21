@@ -11,6 +11,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 public class BasicComponent {
     /**
      * Creates a plain text component in white.
+     *
      * @param text Content
      * @return Component
      */
@@ -20,6 +21,7 @@ public class BasicComponent {
 
     /**
      * Creates an empty plain text component in white.
+     *
      * @return Component
      */
     public static Component create() {
@@ -28,6 +30,7 @@ public class BasicComponent {
 
     /**
      * Creates a plain text component in gray.
+     *
      * @param text Content
      * @return Component
      */

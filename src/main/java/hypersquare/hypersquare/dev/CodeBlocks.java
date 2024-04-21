@@ -41,6 +41,7 @@ public enum CodeBlocks {
     CodeBlocks(Material material, String id) {
         this(material, id, id, false, false, false, false, "");
     }
+
     CodeBlocks(Material material, String name, String id, boolean hasBarrel, boolean hasBrackets) {
         this(material, name, id, hasBarrel, hasBrackets, false, true, "");
     }
@@ -48,9 +49,11 @@ public enum CodeBlocks {
     CodeBlocks(Material material, String name, String id, boolean hasBarrel, boolean hasBrackets, boolean isThreadStarter) {
         this(material, name, id, hasBarrel, hasBrackets, isThreadStarter, true, "");
     }
+
     CodeBlocks(Material material, String name, String id, boolean hasBarrel, boolean hasBrackets, boolean isThreadStarter, boolean hasActions) {
         this(material, name, id, hasBarrel, hasBrackets, isThreadStarter, hasActions, "");
     }
+
     CodeBlocks(@NotNull Material material, @NotNull String name, @NotNull String id, boolean hasBarrel, boolean hasBrackets, boolean isThreadStarter, boolean hasActions, @NotNull String defaultAction) {
         this.material = material;
         this.name = name;

@@ -21,17 +21,17 @@ public class PlayerDatabase {
 
     public static void addPlayer(UUID playerUUID, int basicPlots, int largePlots, int hugePlots, int massivePlots, int giganticPlots) {
         Document plotDocument = new Document("player", playerUUID)
-                .append("uuid", playerUUID)
-                .append("max_basic", basicPlots)
-                .append("max_large", largePlots)
-                .append("max_huge", hugePlots)
-                .append("max_massive", massivePlots)
-                .append("max_gigantic", giganticPlots)
-                .append("basic", 0)
-                .append("large", 0)
-                .append("huge", 0)
-                .append("massive", 0)
-                .append("gigantic", 0);
+            .append("uuid", playerUUID)
+            .append("max_basic", basicPlots)
+            .append("max_large", largePlots)
+            .append("max_huge", hugePlots)
+            .append("max_massive", massivePlots)
+            .append("max_gigantic", giganticPlots)
+            .append("basic", 0)
+            .append("large", 0)
+            .append("huge", 0)
+            .append("massive", 0)
+            .append("gigantic", 0);
         playerCollection.insertOne(plotDocument);
         updateLocalPlayerData(Bukkit.getPlayer(playerUUID));
     }

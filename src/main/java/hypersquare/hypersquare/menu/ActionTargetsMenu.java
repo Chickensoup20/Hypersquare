@@ -1,8 +1,8 @@
 package hypersquare.hypersquare.menu;
 
-import hypersquare.hypersquare.dev.target.Target;
 import hypersquare.hypersquare.dev.codefile.CodeFile;
 import hypersquare.hypersquare.dev.codefile.CodeFileHelper;
+import hypersquare.hypersquare.dev.target.Target;
 import hypersquare.hypersquare.menu.system.Menu;
 import hypersquare.hypersquare.menu.system.MenuItem;
 import hypersquare.hypersquare.play.error.HSException;

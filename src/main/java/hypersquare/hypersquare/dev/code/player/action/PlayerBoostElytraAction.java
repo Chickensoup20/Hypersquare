@@ -82,7 +82,7 @@ public class PlayerBoostElytraAction implements Action {
 
     @Override
     public BarrelMenu actionMenu(CodeActionData data) {
-        return new BarrelMenu(this, 1, data)
+        return new BarrelMenu(this, 3, data)
             .parameter("item", 4);
     }
 }

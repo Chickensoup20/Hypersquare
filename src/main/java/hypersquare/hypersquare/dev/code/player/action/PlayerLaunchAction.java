@@ -52,9 +52,11 @@ public class PlayerLaunchAction implements Action {
                     if (locations.isEmpty()) return;
                     Location location = locations.getFirst();
                     Location playerLoc = p.getLocation();
-                    switch (ignoreDistance){
-                        case TRUE -> appliedForce.add(((location.toVector().subtract(playerLoc.toVector())).normalize()).multiply(power.toFloat()));
-                        case FALSE -> appliedForce.add((location.toVector().subtract(playerLoc.toVector())).multiply(power.toFloat()));
+                    switch (ignoreDistance) {
+                        case TRUE ->
+                            appliedForce.add(((location.toVector().subtract(playerLoc.toVector())).normalize()).multiply(power.toFloat()));
+                        case FALSE ->
+                            appliedForce.add((location.toVector().subtract(playerLoc.toVector())).multiply(power.toFloat()));
                     }
                 }
             }

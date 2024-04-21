@@ -13,8 +13,7 @@ public enum IfPlayerItems implements ActionMenuItem {
     TOGGLEABLE_CONDITIONS_CATEGORY(Material.REDSTONE, "<aqua>Toggleable Conditions", "<gray>If sneaking, is swimming,%n<gray>is sprinting, etc.", 10),
     LOCATIONAL_CONDITIONS_CATEGORY(Material.PAPER, "<green>Locational Conditions", "<gray>Is near, is standing%n<gray>on, is looking at, etc.", 12),
     ITEM_CONDITIONS_CATEGORY(Material.ITEM_FRAME, "<gold>Item Conditions", "<gray>Has item, is holding,%n<gray>is wearing, etc.", 14),
-    MISCELLANEOUS_CONDITIONS_CATEGORY(Material.BEDROCK, "<dark_purple>Miscellaneous Conditions", "<gray>Name equals, is riding,%n<gray>has effect, etc.", 16)
-    ;
+    MISCELLANEOUS_CONDITIONS_CATEGORY(Material.BEDROCK, "<dark_purple>Miscellaneous Conditions", "<gray>Name equals, is riding,%n<gray>has effect, etc.", 16);
 
     public final Material material;
     public final String name;

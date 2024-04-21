@@ -25,11 +25,11 @@ import oshi.util.tuples.Pair;
 
 public class BarrelMenu extends Menu {
 
-    private Location block;
     private final BarrelParamSupplier paramSupplier;
     private final BarrelTagSupplier tagSupplier;
     private final TagOptionsData tagsData;
     private final ArgumentsData argsData;
+    private Location block;
 
     public BarrelMenu(
         @NotNull Component name, @NotNull BarrelParamSupplier paramSupplier, @NotNull BarrelTagSupplier tagSupplier,
@@ -94,8 +94,7 @@ public class BarrelMenu extends Menu {
             if (cursor.isEmpty()) p.setItemOnCursor(param.getValue(argsData, true));
             else p.setItemOnCursor(param.replaceValue(argsData, cursor));
             slot(event.getSlot(), param.updated(argsData));
-        }
-        else if (menuItem instanceof MenuTag tag) {
+        } else if (menuItem instanceof MenuTag tag) {
             TagOptionsData tagsData = CodeFileHelper.getTagsDataAt(block, data);
             if (tagsData == null) return;
             VariableValue.HSVar varValue = tagsData.getTags().getOrDefault(tag.tag.id(), new Pair<>(null, null)).getB();
@@ -124,8 +123,8 @@ public class BarrelMenu extends Menu {
             position = (position + tag.tag.options().length) % tag.tag.options().length;
 
             tagsData.getTags().put(tag.tag.id(), new Pair<>(
-                    tag.tag.options()[position].id().name(),
-                    varValue
+                tag.tag.options()[position].id().name(),
+                varValue
             ));
             slot(event.getSlot(), new MenuTag(tag.tag, tagsData));
             Player player = (Player) event.getWhoClicked();
@@ -178,7 +177,7 @@ public class BarrelMenu extends Menu {
 
             action.getTags().put(tag.tag.id(), new Pair<>(
                 action.getTags().getOrDefault(tag.tag.id(), new Pair<>(tag.tag.defaultOption().name(), null)).getA(),
-                    null
+                null
             ));
             file.setCode(data.toJson().toString());
             slot(event.getSlot(), new MenuTag(tag.tag, action));

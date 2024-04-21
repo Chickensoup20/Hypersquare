@@ -39,7 +39,7 @@ public class PlayerRemoveItemsAction implements Action {
             item.setAmount(amount);
             items.add(item);
         }
-        
+
         for (Player p : targetSel.players()) {
             for (ItemStack item : items) {
                 p.getInventory().removeItem(item);
@@ -49,19 +49,19 @@ public class PlayerRemoveItemsAction implements Action {
 
     public ItemStack item() {
         return new ActionItem()
-                .setMaterial(Material.FLINT_AND_STEEL)
-                .setName(Component.text(this.getName()).color(NamedTextColor.RED))
-                .setDescription(Component.text("Removes given amount of item"),
-                        Component.text("in the barrel from the player"))
-                .setParameters(parameters())
-                .build();
+            .setMaterial(Material.FLINT_AND_STEEL)
+            .setName(Component.text(this.getName()).color(NamedTextColor.RED))
+            .setDescription(Component.text("Removes given amount of item"),
+                Component.text("in the barrel from the player"))
+            .setParameters(parameters())
+            .build();
     }
 
     @Override
     public BarrelMenu actionMenu(CodeActionData data) {
         return new BarrelMenu(this, 4, data)
-                .parameterRange("items", 9, 26)
-                .parameter("multiplier", 35);
+            .parameterRange("items", 9, 26)
+            .parameter("multiplier", 35);
     }
 
     @Override

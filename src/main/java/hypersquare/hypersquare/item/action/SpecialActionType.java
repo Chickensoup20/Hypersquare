@@ -11,6 +11,7 @@ public enum SpecialActionType {
 
     final TextColor color;
     final String name;
+
     SpecialActionType(TextColor color, String name) {
         this.color = color;
         this.name = name;

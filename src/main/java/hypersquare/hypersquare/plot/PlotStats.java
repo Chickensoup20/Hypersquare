@@ -23,8 +23,8 @@ public class PlotStats {
         String uuid = player.getUniqueId().toString();
         long timestamp = System.currentTimeMillis();
         Document playerDoc = new Document("uuid", uuid)
-                .append("timestamp", timestamp)
-                .append("totalTimePlayed", 0); // Adding totalTimePlayed with a default value of 0
+            .append("timestamp", timestamp)
+            .append("totalTimePlayed", 0); // Adding totalTimePlayed with a default value of 0
 
         Document query = new Document("plotID", plotID).append("players.uuid", uuid);
         Document update = new Document("$set", new Document("players.$.timestamp", timestamp));
@@ -55,7 +55,7 @@ public class PlotStats {
 
         // Construct the query to find unique players in the last seven days
         Document query = new Document("plotID", plotID)
-                .append("players.timestamp", new Document("$gte", sevenDaysAgo));
+            .append("players.timestamp", new Document("$gte", sevenDaysAgo));
 
         List<Object> distinctPlayers = Collections.singletonList(plotStats.distinct("players.uuid", query, Object.class));
         return distinctPlayers.size();

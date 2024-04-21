@@ -19,6 +19,7 @@ public class ActionItem {
 
     Component name;
     Material material;
+    ItemStack itemStack;
     Component[] description;
     BarrelParameter[] params;
     int tags;
@@ -28,6 +29,11 @@ public class ActionItem {
 
     public ActionItem setMaterial(Material material) {
         this.material = material;
+        return this;
+    }
+
+    public ActionItem setItemStack(ItemStack itemStack) {
+        this.itemStack = itemStack;
         return this;
     }
 
@@ -54,14 +60,14 @@ public class ActionItem {
     public ActionItem addAdditionalInfo(Component @NotNull ... info) {
         List<Component[]> infoList = new ArrayList<>(additionalInfo);
         info[0] = Component.text("⏵")
-                .color(NamedTextColor.BLUE)
-                .append(Component.text(" ")
-                        .color(NamedTextColor.GRAY)
-                        .append(info[0]
-                                .color(NamedTextColor.GRAY)));
+            .color(NamedTextColor.BLUE)
+            .append(Component.text(" ")
+                .color(NamedTextColor.GRAY)
+                .append(info[0]
+                    .color(NamedTextColor.GRAY)));
         for (int i = 1; i < info.length; i++) {
             info[i] = info[i].color(NamedTextColor.GRAY)
-                    .decoration(TextDecoration.ITALIC, false);
+                .decoration(TextDecoration.ITALIC, false);
         }
         infoList.add(info);
         this.additionalInfo = infoList;
@@ -79,7 +85,12 @@ public class ActionItem {
     }
 
     public ItemStack build() {
-        ItemStack actionItem = new ItemStack(material);
+        ItemStack actionItem;
+        if (itemStack == null) {
+            actionItem = new ItemStack(material);
+        } else {
+            actionItem = itemStack;
+        }
         ItemMeta meta = actionItem.getItemMeta();
         List<Component> lore = new ArrayList<>(List.of());
 
@@ -100,8 +111,8 @@ public class ActionItem {
         // Type - Description(s)*
         lore.add(Component.empty());
         lore.add(Component.text("Barrel Parameters:")
-                .color(NamedTextColor.WHITE)
-                .decoration(TextDecoration.ITALIC, false));
+            .color(NamedTextColor.WHITE)
+            .decoration(TextDecoration.ITALIC, false));
         boolean hasOptional = false;
         if (params != null) {
             for (BarrelParameter actionParameter : params) {
@@ -111,7 +122,7 @@ public class ActionItem {
                     hasOptional = true;
                     paramComp = paramComp.append(Component.text("*").color(NamedTextColor.GRAY));
                 }
-                paramComp = paramComp.append(Component.text(" - ").color(NamedTextColor.DARK_GRAY)).append(actionParameter.description().color(NamedTextColor.GRAY));
+                paramComp = paramComp.append(Component.text(actionParameter.type().isIndicator ? " " : " - ").color(NamedTextColor.DARK_GRAY)).append(actionParameter.description().color(NamedTextColor.GRAY));
                 lore.add(paramComp.decoration(TextDecoration.ITALIC, false));
             }
         }
@@ -120,16 +131,17 @@ public class ActionItem {
         // 1 Tag | 2 Tags
         if (tags != 0) {
             lore.add(Component.text("# ").decoration(TextDecoration.ITALIC, false)
-                    .color(NamedTextColor.DARK_AQUA)
-                    .append(Component.text(tags)
-                            .color(NamedTextColor.GRAY)
-                            .append(Component.text(" Tag" + (tags == 1 ? "" : "s"))
-                            )
+                .color(NamedTextColor.DARK_AQUA)
+                .append(Component.text(tags)
+                    .color(NamedTextColor.GRAY)
+                    .append(Component.text(" Tag" + (tags == 1 ? "" : "s"))
                     )
+                )
             );
         }
 
-        if (params == null & tags == 0) lore.add(Component.text("None").color(NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false));
+        if ((params == null || params.length == 0) & tags == 0)
+            lore.add(Component.text("None").color(NamedTextColor.DARK_GRAY).decoration(TextDecoration.ITALIC, false));
 
         // Additional Info
         if (!additionalInfo.isEmpty()) {

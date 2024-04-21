@@ -93,6 +93,7 @@ public class WaitAction implements Action {
         ;
 
         public final long ticks;
+
         WaitTimeUnit(long ticks) {
             this.ticks = ticks;
         }

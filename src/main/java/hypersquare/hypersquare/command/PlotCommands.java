@@ -38,50 +38,6 @@ import java.util.UUID;
 import static hypersquare.hypersquare.Hypersquare.minimalMM;
 
 public class PlotCommands implements HyperCommand {
-    @Override
-    public void register(CommandDispatcher<CommandSourceStack> cd) {
-        for (String alias : List.of("plot", "p")) {
-            cd.register(literal(alias)
-                    .then(literal("name")
-                            .then(argument("name", StringArgumentType.greedyString())
-                                    .executes(this::setName)))
-                    .then(literal("icon").executes(this::setIcon))
-                    .then(literal("unclaim").executes(this::unclaimPlot))
-                    .then(literal("dev")
-                            .then(literal("add")
-                                    .then(argument("player", StringArgumentType.string()).executes(ctx -> {
-                                        givePlotPermission(ctx,"dev");
-                                        return DONE;
-                                    }))
-                            )
-                            .then(literal("remove")
-                                    .then(argument("player", StringArgumentType.string()).executes(ctx -> {
-                                        removePlotPermission(ctx,"dev");
-                                        return DONE;
-                                    }))
-                            )
-                            .then(literal("list").executes(this::listDevs))
-                    )
-                    .then(literal("builder")
-                            .then(literal("add")
-                                    .then(argument("player", StringArgumentType.string()).executes(ctx -> {
-                                        givePlotPermission(ctx,"builder");
-                                        return DONE;
-                                    }))
-                            )
-                            .then(literal("remove")
-                                    .then(argument("player", StringArgumentType.string()).executes(ctx -> {
-                                        removePlotPermission(ctx,"builder");
-                                        return DONE;
-                                    }))
-                            )
-                    )
-                    .then(literal("stats").executes(this::getStats))
-                .then(literal("debug").executes(this::plotDebug))
-            );
-        }
-    }
-
     public static void givePlotPermission(CommandContext<CommandSourceStack> ctx, String permission) {
 
         Player sender = (Player) ctx.getSource().getBukkitSender();
@@ -156,6 +112,50 @@ public class PlotCommands implements HyperCommand {
         }
     }
 
+    @Override
+    public void register(CommandDispatcher<CommandSourceStack> cd) {
+        for (String alias : List.of("plot", "p")) {
+            cd.register(literal(alias)
+                .then(literal("name")
+                    .then(argument("name", StringArgumentType.greedyString())
+                        .executes(this::setName)))
+                .then(literal("icon").executes(this::setIcon))
+                .then(literal("unclaim").executes(this::unclaimPlot))
+                .then(literal("dev")
+                    .then(literal("add")
+                        .then(argument("player", StringArgumentType.string()).executes(ctx -> {
+                            givePlotPermission(ctx, "dev");
+                            return DONE;
+                        }))
+                    )
+                    .then(literal("remove")
+                        .then(argument("player", StringArgumentType.string()).executes(ctx -> {
+                            removePlotPermission(ctx, "dev");
+                            return DONE;
+                        }))
+                    )
+                    .then(literal("list").executes(this::listDevs))
+                )
+                .then(literal("builder")
+                    .then(literal("add")
+                        .then(argument("player", StringArgumentType.string()).executes(ctx -> {
+                            givePlotPermission(ctx, "builder");
+                            return DONE;
+                        }))
+                    )
+                    .then(literal("remove")
+                        .then(argument("player", StringArgumentType.string()).executes(ctx -> {
+                            removePlotPermission(ctx, "builder");
+                            return DONE;
+                        }))
+                    )
+                )
+                .then(literal("stats").executes(this::getStats))
+                .then(literal("debug").executes(this::plotDebug))
+            );
+        }
+    }
+
     private int listDevs(CommandContext<CommandSourceStack> ctx) {
         if (ctx.getSource().getBukkitSender() instanceof Player player) {
             int plotID = PlotUtilities.getPlotId(player.getWorld());
@@ -169,7 +169,7 @@ public class PlotCommands implements HyperCommand {
             }
             if (devs.length() > 2) devs = new StringBuilder(devs.substring(0, devs.length() - 2));
             player.sendMessage(Component.text("Plot Devs: ").color(NamedTextColor.AQUA)
-                    .append(Component.text(devs.toString()).color(NamedTextColor.GREEN)));
+                .append(Component.text(devs.toString()).color(NamedTextColor.GREEN)));
         }
         return DONE;
     }

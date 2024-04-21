@@ -2,18 +2,12 @@ package hypersquare.hypersquare.util;
 
 import hypersquare.hypersquare.Hypersquare;
 import hypersquare.hypersquare.dev.value.CodeValues;
-import hypersquare.hypersquare.dev.value.impl.LocationValue;
-import hypersquare.hypersquare.dev.value.type.DecimalNumber;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.MagmaCube;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Slime;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
@@ -50,7 +44,7 @@ public class ValueDisplay {
     }
 
     public static void spawnValueDisplay(Location location, NamedTextColor color) {
-        display = location.getWorld().spawn(new Location(location.getWorld(), 0,1000,0,location.getYaw(),location.getPitch()), MagmaCube.class);
+        display = location.getWorld().spawn(new Location(location.getWorld(), 0, 1000, 0, location.getYaw(), location.getPitch()), MagmaCube.class);
         display.setAI(false);
         display.setInvisible(true);
         display.setSize(1);
@@ -67,19 +61,20 @@ public class ValueDisplay {
         team.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
 
 
-
     }
 
-    public static UUID getID(){ return display.getUniqueId();}
+    public static UUID getID() {
+        return display.getUniqueId();
+    }
 
     public static void removeValueDisplay(UUID uuid) {
-        if (uuid != null){
+        if (uuid != null) {
             if (Bukkit.getEntity(uuid) != null) Bukkit.getEntity(uuid).remove();
         }
 
     }
 
-    public static void showLocationDisplay(Player player, Location newLocation){
+    public static void showLocationDisplay(Player player, Location newLocation) {
         if (Hypersquare.mode.get(player).equals("building")) {
             if (player.getInventory().getItemInMainHand().getItemMeta() != null) {
                 if (CodeValues.LOCATION.fromItem(player.getInventory().getItemInMainHand()) != null) {
@@ -88,7 +83,7 @@ public class ValueDisplay {
                         Hypersquare.locationValueDisplays.remove(player);
                     }
                     spawnValueDisplay(newLocation, NamedTextColor.GREEN);
-                    Hypersquare.locationValueDisplays.put(player,getID());
+                    Hypersquare.locationValueDisplays.put(player, getID());
                 }
             }
         }

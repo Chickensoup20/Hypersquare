@@ -13,14 +13,14 @@ public class PlayerJoinEvent implements Event {
 
     public ItemStack item() {
         return new EventItem()
-                .setMaterial(Material.POTATO)
-                .setName(Component.text("Player Join Game Event").color(NamedTextColor.GREEN))
-                .setDescription(Component.text("Executes code when a player"),
-                                Component.text("joins the plot."))
-                .addAdditionalInfo(Component.text("This event runs even"),
-                                   Component.text("when a player rejoins the"),
-                                   Component.text("plot. (i.e. /play)"))
-                .build();
+            .setMaterial(Material.POTATO)
+            .setName(Component.text("Player Join Game Event").color(NamedTextColor.GREEN))
+            .setDescription(Component.text("Executes code when a player"),
+                Component.text("joins the plot."))
+            .addAdditionalInfo(Component.text("This event runs even"),
+                Component.text("when a player rejoins the"),
+                Component.text("plot. (i.e. /play)"))
+            .build();
     }
 
     @Override

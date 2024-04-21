@@ -51,7 +51,7 @@ public class ChangeGameMode {
                 Hypersquare.mode.put(player, "coding");
 
                 if (keepState && Hypersquare.lastDevLocation.containsKey(player)
-                        && Hypersquare.lastDevLocation.get(player).getWorld().getName().equals(worldName)) {
+                    && Hypersquare.lastDevLocation.get(player).getWorld().getName().equals(worldName)) {
                     player.teleport(Hypersquare.lastDevLocation.get(player));
                 } else {
                     player.teleport(new Location(Bukkit.getWorld(worldName), -3.5, 0, 2.5, -90, 0));
@@ -80,8 +80,10 @@ public class ChangeGameMode {
             PlotManager.loadPlot(plotID);
             CodeExecutor executor = codeExecMap.get(plotID);
             PlayerQuitEvent leaveEvent = quitEvent(player);
-            if (oldMode.equals("playing")) executor.trigger(Events.PLAYER_LEAVE_EVENT, leaveEvent, new CodeSelection(player));
-            if (oldPlotID == plotID) executor.trigger(Events.PLAYER_REJOIN_EVENT, leaveEvent, new CodeSelection(player));
+            if (oldMode.equals("playing"))
+                executor.trigger(Events.PLAYER_LEAVE_EVENT, leaveEvent, new CodeSelection(player));
+            if (oldPlotID == plotID)
+                executor.trigger(Events.PLAYER_REJOIN_EVENT, leaveEvent, new CodeSelection(player));
 
             Utilities.resetPlayerStats(player);
             player.closeInventory();

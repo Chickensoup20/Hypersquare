@@ -14,7 +14,7 @@ public class NullValue implements CodeValue<String, String> {
     @Override
     public Component getName() {
         return Component.text("Null").color(DisplayValue.NULL.color)
-                .decoration(TextDecoration.ITALIC, false);
+            .decoration(TextDecoration.ITALIC, false);
     }
 
     @Override
@@ -40,11 +40,11 @@ public class NullValue implements CodeValue<String, String> {
     @Override
     public List<Component> getDescription() {
         return List.of(
-                BasicComponent.gray("Represents a null value."),
-                BasicComponent.gray("Typically used as a"),
-                BasicComponent.gray("non-existent value."),
-                BasicComponent.gray("Returned by failed variable"),
-                BasicComponent.gray("actions.")
+            BasicComponent.gray("Represents a null value."),
+            BasicComponent.gray("Typically used as a"),
+            BasicComponent.gray("non-existent value."),
+            BasicComponent.gray("Returned by failed variable"),
+            BasicComponent.gray("actions.")
         );
     }
 

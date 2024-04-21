@@ -12,15 +12,15 @@ import org.bukkit.inventory.ItemStack;
 public class PlayerLeftClickEvent implements CancellableEvent {
     public ItemStack item() {
         return new EventItem()
-                .setMaterial(Material.IRON_PICKAXE)
-                .setName(Component.text("Player Left Click Event").color(NamedTextColor.AQUA))
-                .setDescription(
-                        Component.text("Executes code when a player"),
-                        Component.text("left clicks."))
-                .addAdditionalInfo(Component.text("Does not execute if the"),
-                                   Component.text("player dealt damage."))
-                .setCancellable(true)
-                .build();
+            .setMaterial(Material.IRON_PICKAXE)
+            .setName(Component.text("Player Left Click Event").color(NamedTextColor.AQUA))
+            .setDescription(
+                Component.text("Executes code when a player"),
+                Component.text("left clicks."))
+            .addAdditionalInfo(Component.text("Does not execute if the"),
+                Component.text("player dealt damage."))
+            .setCancellable(true)
+            .build();
     }
 
     @Override

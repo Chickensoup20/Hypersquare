@@ -19,7 +19,7 @@ public class CreatePlotsMenu {
         HashMap<String, Integer> playerData = Hypersquare.localPlayerData.get(player.getUniqueId());
 
         Menu menu = new Menu(Component.text("Choose a plot size"), 1);
-        
+
         int usedBasic = playerData.get("used_basic");
         int maxBasic = playerData.get("max_basic");
         int usedLarge = playerData.get("used_large");
@@ -38,10 +38,10 @@ public class CreatePlotsMenu {
         MenuItem gigantic = new MenuItem(CreatePlotMenuItems.GIGANTIC_PLOT.build(usedGigantic, maxGigantic));
 
         menu.slot(0, basic)
-                .slot(2, large)
-                .slot(4, huge)
-                .slot(6, massive)
-                .slot(8, gigantic);
+            .slot(2, large)
+            .slot(4, huge)
+            .slot(6, massive)
+            .slot(8, gigantic);
 
         basic.onClick(() -> {
             if (usedBasic < maxBasic) {

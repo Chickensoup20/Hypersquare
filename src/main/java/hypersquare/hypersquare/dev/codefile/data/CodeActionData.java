@@ -14,12 +14,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CodeActionData implements ArgumentsData, TagOptionsData {
-    public String action;
-    public String target;
-    public String codeblock;
     public final List<CodeActionData> actions = new LinkedList<>();
     private final HashMap<String, List<JsonObject>> arguments = new HashMap<>();
     private final HashMap<String, Pair<String, VariableValue.HSVar>> tags = new HashMap<>();
+    public String action;
+    public String target;
+    public String codeblock;
 
     public CodeActionData() {
     }

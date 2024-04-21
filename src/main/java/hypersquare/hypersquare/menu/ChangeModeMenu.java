@@ -22,8 +22,8 @@ public class ChangeModeMenu {
         lore.add(Component.text(""));
         lore.add(Component.text("Click to enter your plot").color(NamedTextColor.GRAY));
         lore.add(Component.text("in ").color(NamedTextColor.GRAY)
-                .append(Component.text("play ").color(Colors.AQUA_LIGHT))
-                .append(Component.text("mode").color(NamedTextColor.GRAY))
+            .append(Component.text("play ").color(Colors.AQUA_LIGHT))
+            .append(Component.text("mode").color(NamedTextColor.GRAY))
         );
         lore.add(Component.text(""));
         lore.replaceAll(component -> component.decoration(TextDecoration.ITALIC, false));
@@ -36,8 +36,8 @@ public class ChangeModeMenu {
         lore.add(Component.text(""));
         lore.add(Component.text("Click to enter your plot").color(NamedTextColor.GRAY));
         lore.add(Component.text("in ").color(NamedTextColor.GRAY)
-                .append(Component.text("build ").color(Colors.AQUA_LIGHT))
-                .append(Component.text("mode").color(NamedTextColor.GRAY))
+            .append(Component.text("build ").color(Colors.AQUA_LIGHT))
+            .append(Component.text("mode").color(NamedTextColor.GRAY))
         );
         lore.add(Component.text(""));
         lore.replaceAll(component -> component.decoration(TextDecoration.ITALIC, false));
@@ -51,8 +51,8 @@ public class ChangeModeMenu {
         lore.add(Component.text(""));
         lore.add(Component.text("Click to enter your plot").color(NamedTextColor.GRAY));
         lore.add(Component.text("in ").color(NamedTextColor.GRAY)
-                .append(Component.text("code ").color(Colors.AQUA_LIGHT))
-                .append(Component.text("mode").color(NamedTextColor.GRAY))
+            .append(Component.text("code ").color(Colors.AQUA_LIGHT))
+            .append(Component.text("mode").color(NamedTextColor.GRAY))
         );
         lore.add(Component.text(""));
         lore.replaceAll(component -> component.decoration(TextDecoration.ITALIC, false));
@@ -63,11 +63,11 @@ public class ChangeModeMenu {
         addToFav.name(Component.text("Add to Favorites").color(NamedTextColor.GREEN));
 
         Menu menu = new Menu(Component.text("Plot Information"), 3)
-                .slot(4, plotIcon)
-                .slot(10, play)
-                .slot(12, build)
-                .slot(14, code)
-                .slot(16, addToFav);
+            .slot(4, plotIcon)
+            .slot(10, play)
+            .slot(12, build)
+            .slot(14, code)
+            .slot(16, addToFav);
         menu.open(player);
     }
 }

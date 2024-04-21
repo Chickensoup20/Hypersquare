@@ -12,11 +12,17 @@ import org.jetbrains.annotations.NotNull;
 
 public interface Action extends BarrelParamSupplier, BarrelTagSupplier {
     void execute(@NotNull ExecutionContext ctx, @NotNull CodeSelection targetSel);
+
     String getId();
+
     String getCodeblockId();
+
     String getSignName();
+
     String getName();
+
     ActionMenuItem getCategory();
+
     ItemStack item();
 
     BarrelMenu actionMenu(CodeActionData data);

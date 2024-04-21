@@ -13,11 +13,11 @@ public class PlayerLeaveEvent implements Event {
 
     public ItemStack item() {
         return new EventItem()
-                .setMaterial(Material.POISONOUS_POTATO)
-                .setName(Component.text("Player Leave Game Event").color(NamedTextColor.RED))
-                .setDescription(Component.text("Executes code when a player"),
-                                Component.text("leaves the plot."))
-                .build();
+            .setMaterial(Material.POISONOUS_POTATO)
+            .setName(Component.text("Player Leave Game Event").color(NamedTextColor.RED))
+            .setDescription(Component.text("Executes code when a player"),
+                Component.text("leaves the plot."))
+            .build();
     }
 
     @Override

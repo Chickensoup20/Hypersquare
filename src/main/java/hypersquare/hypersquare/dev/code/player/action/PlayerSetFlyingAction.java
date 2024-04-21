@@ -4,33 +4,26 @@ import hypersquare.hypersquare.dev.BarrelParameter;
 import hypersquare.hypersquare.dev.BarrelTag;
 import hypersquare.hypersquare.dev.action.Action;
 import hypersquare.hypersquare.dev.codefile.data.CodeActionData;
-import hypersquare.hypersquare.dev.value.type.DecimalNumber;
 import hypersquare.hypersquare.item.action.ActionItem;
 import hypersquare.hypersquare.item.action.ActionMenuItem;
 import hypersquare.hypersquare.item.action.player.PlayerActionItems;
-import hypersquare.hypersquare.item.value.DisplayValue;
 import hypersquare.hypersquare.menu.barrel.BarrelMenu;
 import hypersquare.hypersquare.play.CodeSelection;
 import hypersquare.hypersquare.play.execution.ExecutionContext;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
-import java.util.Objects;
 
 public class PlayerSetFlyingAction implements Action {
     @Override
     public void execute(@NotNull ExecutionContext ctx, @NotNull CodeSelection targetSel) {
         for (Player p : targetSel.players()) {
             Flying flying = ctx.getTag("flying", Flying::valueOf);
-            boolean fly = flying != Flying.FALSE;
-            if (fly){ if (p.getAllowFlight()) p.setFlying(true); } else p.setFlying(false);
+            boolean fly = flying == Flying.TRUE;
+            p.setFlying(fly && p.getAllowFlight());
         }
     }
 
@@ -41,12 +34,7 @@ public class PlayerSetFlyingAction implements Action {
 
     @Override
     public BarrelTag[] tags() {
-        return new BarrelTag[]{
-            new BarrelTag("flying", "Flying", Flying.TRUE,
-                new BarrelTag.Option(Flying.TRUE, "True", Material.LIME_DYE),
-                new BarrelTag.Option(Flying.FALSE, "False", Material.RED_DYE)
-            )
-        };
+        return new BarrelTag[]{new BarrelTag("flying", "Flying", Flying.TRUE, new BarrelTag.Option(Flying.TRUE, "True", Material.LIME_DYE), new BarrelTag.Option(Flying.FALSE, "False", Material.RED_DYE))};
     }
 
     @Override
@@ -76,23 +64,15 @@ public class PlayerSetFlyingAction implements Action {
 
     @Override
     public ItemStack item() {
-        return new ActionItem()
-            .setMaterial(Material.FEATHER)
-            .setName(Component.text("Set Flying").color(NamedTextColor.GOLD))
-            .setDescription(Component.text("Sets the player's flying state."))
-            .setParameters(parameters())
-            .setTagAmount(tags().length)
-            .build();
+        return new ActionItem().setMaterial(Material.FEATHER).setName(Component.text("Set Flying").color(NamedTextColor.GOLD)).setDescription(Component.text("Sets the player's flying state.")).setParameters(parameters()).setTagAmount(tags().length).build();
     }
 
     @Override
     public BarrelMenu actionMenu(CodeActionData data) {
-        return new BarrelMenu(this, 1, data)
-            .tag("flying", 4);
+        return new BarrelMenu(this, 3, data).tag("flying", 4);
     }
 
     private enum Flying {
-        TRUE,
-        FALSE,
+        TRUE, FALSE,
     }
 }
