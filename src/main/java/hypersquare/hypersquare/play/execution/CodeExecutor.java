@@ -41,7 +41,7 @@ public class CodeExecutor {
     }
 
     public void halt() {
-        for (var r : running.values()) r.cancel();
+        for (var r : running.values());
         running.clear();
     }
 
@@ -59,7 +59,7 @@ public class CodeExecutor {
             if (!line.event.equals(event.getId()) || !line.type.equals(event.getCodeblockId())) continue;
             // run every line that has the same event
             CodeStacktrace trace = new CodeStacktrace(event, bukkitEvent, new CodeStacktrace.Frame(line.actions, selection));
-            trigger(trace, r -> r.runTask(Hypersquare.instance));
+            trigger(trace, r -> r.run());
         }
     }
 
@@ -153,12 +153,11 @@ public class CodeExecutor {
         return ctx;
     }
 
-    public class EventRunnable extends BukkitRunnable {
+    public class EventRunnable {
         private final CodeStacktrace trace;
         EventRunnable(CodeStacktrace trace) {
             this.trace = trace;
         }
-        @Override
         public void run() {
             trace.halt = false;
             try { continueEval(trace); } catch (Exception e) {

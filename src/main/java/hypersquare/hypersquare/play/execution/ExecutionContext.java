@@ -49,6 +49,6 @@ public record ExecutionContext(
 
     public void sleep(int dur) {
         trace.halt = true;
-        executor.trigger(trace, r -> r.runTaskLater(Hypersquare.instance, dur));
+        executor.trigger(trace, CodeExecutor.EventRunnable::run);
     }
 }
