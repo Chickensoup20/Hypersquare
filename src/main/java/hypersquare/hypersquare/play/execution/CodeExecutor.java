@@ -109,7 +109,7 @@ public class CodeExecutor {
         }
     }
 
-    private void execute(RunFunction run, Action action, CodeStacktrace trace, CodeStacktrace.Frame frame, CodeActionData data) {
+    private void execute(EventRunnable.RunFunction run, Action action, CodeStacktrace trace, CodeStacktrace.Frame frame, CodeActionData data) {
         ExecutionContext ctx;
         try {
             ctx = getCtx(action, trace, data);
@@ -165,15 +165,12 @@ public class CodeExecutor {
     private interface RunFunction {
         void invoke(ExecutionContext ctx, CodeSelection targetSel);
     }
-
-    public class EventRunnable extends BukkitRunnable {
         private final CodeStacktrace trace;
 
         EventRunnable(CodeStacktrace trace) {
             this.trace = trace;
         }
 
-        @Override
         public void run() {
             trace.halt = false;
             try {
@@ -184,6 +181,5 @@ public class CodeExecutor {
             running.remove(trace.event, this);
         }
     }
-}
 }
 

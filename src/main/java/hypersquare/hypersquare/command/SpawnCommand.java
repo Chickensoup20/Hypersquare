@@ -19,16 +19,12 @@ public class SpawnCommand implements HyperCommand {
     }
 
     private int run(CommandContext<CommandSourceStack> ctx){
-        cd.register(literal("spawn")
-            .executes(ctx -> {
-                CommandSender sender = ctx.getSource().getBukkitSender();
-                if (sender instanceof Player player) {
-                    ChangeGameMode.spawn(player);
-                } else {
-                    sender.sendMessage("This command can only be used by players.");
-                }
-                return DONE;
-            })
-        );
+        CommandSender sender = ctx.getSource().getBukkitSender();
+        if (sender instanceof Player player) {
+            ChangeGameMode.spawn(player);
+        } else {
+            sender.sendMessage("This command can only be used by players.");
+        }
+        return DONE;
     }
 }
