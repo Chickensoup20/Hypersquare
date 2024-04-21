@@ -15,7 +15,7 @@ import java.util.List;
 public class GivePlotsCommand implements HyperCommand {
     @Override
     public void register(CommandDispatcher<CommandSourceStack> cd) {
-        for (String plotSize : List.of("basic", "large")) {
+        for (String plotSize : List.of("basic", "large","massive","huge","gigantic")) {
             cd.register(literal("giveplots").then(argument("player", EntityArgument.player())
                 .then(literal(plotSize).then(argument("amount", IntegerArgumentType.integer())
                     .executes(ctx -> {

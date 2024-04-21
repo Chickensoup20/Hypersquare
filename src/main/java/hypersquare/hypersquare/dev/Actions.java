@@ -4,6 +4,8 @@ import hypersquare.hypersquare.dev.action.Action;
 import hypersquare.hypersquare.dev.action.EmptyAction;
 import hypersquare.hypersquare.dev.code.control.WaitAction;
 import hypersquare.hypersquare.dev.code.dev.PrintStackTraceAction;
+import hypersquare.hypersquare.dev.code.game.GameCancelEventAction;
+import hypersquare.hypersquare.dev.code.game.GameSetRegionAction;
 import hypersquare.hypersquare.dev.code.player.action.*;
 import hypersquare.hypersquare.dev.code.player.condition.*;
 import hypersquare.hypersquare.dev.code.var.action.AssignVariableAction;
@@ -64,6 +66,7 @@ public enum Actions implements Action {
     PLAYER_BOOST_ELYTRA(new PlayerBoostElytraAction()),
     PLAYER_SET_ROTATION(new PlayerSetRotationAction()),
     PLAYER_FACE_LOCATION(new PlayerFaceLocationAction()),
+    PLAYER_SHOW_TITLE(new PlayerShowTitleAction()),
 
     // Player World
     SET_COMPASS_TARGET(new PlayerSetCompassTargetAction()),
@@ -89,6 +92,10 @@ public enum Actions implements Action {
     IF_PLAYER_SPRINTING(new IfPlayerSprinting()),
     IF_PLAYER_FLYING(new IfPlayerFlying()),
     IF_PLAYER_GLIDING(new IfPlayerGliding()),
+
+    //Game actions
+    SET_REGION(new GameSetRegionAction()),
+    GAME_CANCEL_EVENT(new GameCancelEventAction()),
 
 
     ASSIGN_VARIABLE(new AssignVariableAction()),

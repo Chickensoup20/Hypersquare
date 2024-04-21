@@ -29,6 +29,15 @@ public class LocateCommand implements HyperCommand {
             }
             return DONE;
         }));
+        cd.register(literal("find").then(argument("player", EntityArgument.player()).executes(ctx -> {
+            locatePlayer(ctx, EntityArgument.getPlayer(ctx, "player").getBukkitEntity());
+            return DONE;
+        })).executes(ctx -> {
+            if (ctx.getSource().getBukkitSender() instanceof Player player) {
+                locatePlayer(ctx, player);
+            }
+            return DONE;
+        }));
     }
 
     private void locatePlayer(CommandContext<CommandSourceStack> ctx, Player target) {
