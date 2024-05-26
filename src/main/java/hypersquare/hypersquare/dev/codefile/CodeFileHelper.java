@@ -1,40 +1,32 @@
 package hypersquare.hypersquare.dev.codefile;
 
+import hypersquare.hypersquare.Hypersquare;
+import hypersquare.hypersquare.dev.ArgumentsData;
 import hypersquare.hypersquare.dev.CodeBlocks;
+import hypersquare.hypersquare.dev.TagOptionsData;
+import hypersquare.hypersquare.dev.action.Action;
 import hypersquare.hypersquare.dev.codefile.data.CodeActionData;
 import hypersquare.hypersquare.dev.codefile.data.CodeData;
 import hypersquare.hypersquare.dev.codefile.data.CodeLineData;
-import hypersquare.hypersquare.item.Action;
-import hypersquare.hypersquare.item.Event;
+import hypersquare.hypersquare.dev.target.Target;
+import hypersquare.hypersquare.item.event.Event;
 import hypersquare.hypersquare.plot.CodeBlockManagement;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.type.Piston;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 public class CodeFileHelper {
-    @NotNull
-    private static String genEmptyCodeblock(String name) {
-        // PLAYER ACTION => player_action_empty
-        return name.toLowerCase().replace(" ", "_") + "_empty";
-    }
-
-    private static int getCodelineWorldIndex(Location location) {
+    private static int getCodelineWorldIndex(@NotNull Location location) {
         return Math.abs(location.getBlockX() / 3) - 1;
     }
 
-    public static int getCodeblockIndex(Location location) {
-        return (int) Math.floor((double) location.getBlockZ() / 2) - 1;
-    }
-
-    public static int getCodelineListIndex(Location location, CodeData plotCode) {
+    public static int getCodelineListIndex(@NotNull Location location, @NotNull CodeData plotCode) {
         int position = getCodelineWorldIndex(location);
 
         for (CodeLineData element : plotCode.codelines) {
@@ -46,18 +38,13 @@ public class CodeFileHelper {
     /**
      * Set index to -1 for the codeblock to be appended instead of inserted.
      */
-    public static CodeData addCodeblock(Location location, String name, CodeFile code) {
-
+    public static CodeData addCodeblock(@NotNull Location location, @NotNull CodeBlocks codeblock, @NotNull CodeFile code) {
         CodeData plotCode = code.getCodeData();
-        CodeBlocks codeblock = CodeBlocks.getByName(name);
 
-        if (codeblock.isThreadStarter()) {
+        if (codeblock.isThreadStarter) {
             CodeLineData event = new CodeLineData();
-            String type = CodeBlocks.getByName(name).id();
-            event.type = type;
-            if (codeblock.hasActions) {
-                event.event = type + "_empty";
-            }
+            event.type = codeblock.id;
+            event.event = "empty";
             event.position = getCodelineWorldIndex(location);
             plotCode.codelines.add(event);
             return plotCode;
@@ -68,12 +55,13 @@ public class CodeFileHelper {
         try {
             positions = findCodeIndex(location);
         } catch (Exception e) {
-            Bukkit.getLogger().warning("Failed to find code positions");
+            Hypersquare.logger().warning("Failed to find code positions");
             return plotCode;
         }
 
         CodeActionData action = new CodeActionData();
-        action.action = genEmptyCodeblock(name);
+        action.codeblock = codeblock.id;
+        action.action = codeblock.defaultAction.isEmpty() ? "empty" : codeblock.defaultAction;
 
         if (positions.size() == 1) {
             codeline.actions.add(positions.get(0), action);
@@ -86,10 +74,11 @@ public class CodeFileHelper {
         }
 
         parent.actions.add(positions.get(positions.size() - 1), action);
+
         return plotCode;
     }
 
-    public static CodeData removeCodeBlock(Location location, CodeFile code, boolean breakAll) {
+    public static CodeData removeCodeBlock(@NotNull Location location, @NotNull CodeFile code, boolean breakAll) {
         CodeData plotCode = code.getCodeData();
 
         int codelineListIndex = getCodelineListIndex(location, plotCode);
@@ -99,7 +88,7 @@ public class CodeFileHelper {
         try {
             positions = findCodeIndex(location);
         } catch (Exception e) {
-            Bukkit.getLogger().warning("Failed to find code positions");
+            Hypersquare.logger().warning("Failed to find code positions");
             return plotCode;
         }
 
@@ -111,9 +100,7 @@ public class CodeFileHelper {
         if (positions.size() == 1) {
             int pos = positions.get(0);
             CodeActionData prev = codeline.actions.remove(pos);
-            if (!breakAll) for (CodeActionData action : prev.actions) {
-                codeline.actions.add(pos, action);
-            }
+            if (!breakAll) for (CodeActionData action : prev.actions) codeline.actions.add(pos, action);
             return plotCode;
         }
 
@@ -130,25 +117,21 @@ public class CodeFileHelper {
         return plotCode;
     }
 
-    public static CodeData updateAction(Location location, CodeFile code, Action newAction, CodeBlocks codeblock) {
+    public static void updateAction(@NotNull Location location, @NotNull CodeFile code, Action newAction) {
         CodeData plotCode = code.getCodeData();
-        if (codeblock.isThreadStarter()) return plotCode; // Someone called the wrong method lol
         int codelineListIndex = getCodelineListIndex(location, plotCode);
 
         if (codelineListIndex == -1) {
             // We are updating a non-existent codeline (got deleted by another player)
             // Logging just in case for debug purposes
-            Bukkit.getLogger().warning("Tried updating a non existent codeline @ " + code.world);
-            return code.getCodeData();
+            Hypersquare.logger().warning("[Update Action] Tried updating a non existent codeline @ " + code.world());
+            code.getCodeData();
+            return;
         }
 
         CodeLineData codeline = new CodeLineData();
-
-        if (!plotCode.codelines.isEmpty()) {
-            codeline = plotCode.codelines.get(codelineListIndex);
-        } else {
-            plotCode.codelines.set(codelineListIndex, codeline);
-        }
+        if (!plotCode.codelines.isEmpty()) codeline = plotCode.codelines.get(codelineListIndex);
+        else plotCode.codelines.set(codelineListIndex, codeline);
 
 
         List<Integer> positions;
@@ -156,67 +139,89 @@ public class CodeFileHelper {
             positions = CodeFileHelper.findCodeIndex(location);
         } catch (Exception e) {
             // We are updating a non-existent codeblock
-            Bukkit.getLogger().info("Couldn't find the codeblock the player was editing @ " + code.world);
-            return plotCode;
+            Hypersquare.logger().info("[Update Action] Couldn't find the codeblock the player was editing @ " + code.world());
+            return;
         }
 
-        CodeActionData actionJson = codeline.actions.get(positions.get(0));
+        CodeActionData actionData = codeline.actions.get(positions.get(0));
         for (int i = 1; i < positions.size(); i++) {
-            actionJson = actionJson.actions.get(positions.get(i));
+            actionData = actionData.actions.get(positions.get(i));
         }
-        actionJson.action = newAction.getId();
-        actionJson.arguments = new HashMap<>();
+        actionData.action = newAction.getId();
+        actionData.getArguments().clear();
 
         code.setCode(plotCode.toJson().toString());
-        return plotCode;
     }
 
-    public static CodeData updateEvent(Location location, CodeFile code, Event newEvent, CodeBlocks codeblock) {
+    public static void updateEvent(@NotNull Location location, @NotNull CodeFile code, Event newEvent) {
         CodeData plotCode = code.getCodeData();
-        if (codeblock != CodeBlocks.DIAMOND_BLOCK && codeblock != CodeBlocks.GOLD_BLOCK) return plotCode; // Someone called the wrong method lol
         int codelineListIndex = getCodelineListIndex(location, plotCode);
 
         if (codelineListIndex == -1) {
             // We are updating a non-existent codeline (got deleted by another player)
             // Logging just in case for debug purposes
-            Bukkit.getLogger().warning("Tried updating a non existent codeline @ " + code.world);
-            return code.getCodeData();
+            Hypersquare.logger().warning("[Update Event] Tried updating a non existent codeline @ " + code.world());
+            code.getCodeData();
+            return;
         }
 
         CodeLineData codeline = new CodeLineData();
-
-        if (!plotCode.codelines.isEmpty()) {
-            codeline = plotCode.codelines.get(codelineListIndex);
-        } else {
-            plotCode.codelines.set(codelineListIndex, codeline);
-        }
+        if (!plotCode.codelines.isEmpty()) codeline = plotCode.codelines.get(codelineListIndex);
+        else plotCode.codelines.set(codelineListIndex, codeline);
 
         codeline.event = newEvent.getId();
         plotCode.codelines.set(codelineListIndex, codeline);
         code.setCode(plotCode.toJson().toString());
-        return plotCode;
+    }
+
+    public static void updateTarget(@NotNull Location location, @NotNull CodeFile code, Target newTarget) {
+        CodeData plotCode = code.getCodeData();
+        int codelineListIndex = getCodelineListIndex(location, plotCode);
+
+        if (codelineListIndex == -1) {
+            Hypersquare.logger().warning("[Update Target] Tried updating a non existent codeline @ " + code.world());
+            code.getCodeData();
+            return;
+        }
+
+        CodeLineData codeline = new CodeLineData();
+        if (!plotCode.codelines.isEmpty()) codeline = plotCode.codelines.get(codelineListIndex);
+        else plotCode.codelines.set(codelineListIndex, codeline);
+
+        List<Integer> positions;
+        try {
+            positions = CodeFileHelper.findCodeIndex(location);
+        } catch (Exception e) {
+            // We are updating a non-existent codeblock
+            Hypersquare.logger().info("[Update Target] Couldn't find the codeblock the player was editing @ " + code.world());
+            return;
+        }
+
+        CodeActionData actionData = codeline.actions.get(positions.get(0));
+        for (int i = 1; i < positions.size(); i++) {
+            actionData = actionData.actions.get(positions.get(i));
+        }
+        actionData.target = newTarget.name();
+
+        code.setCode(plotCode.toJson().toString());
     }
 
     /**
      * @return List of integers representing the path to the codeblock,
      * if the codeblock is the thread starter it returns an empty list
      */
-    public static List<Integer> findCodeIndex(Location queryLoc) throws Exception {
+    public static List<Integer> findCodeIndex(@NotNull Location queryLoc) throws Exception {
         List<Integer> trace = new ArrayList<>();
         trace.add(0);
 
-        if (queryLoc.getBlockZ() == 1) {
-            // Thread starter special treatment
-            return List.of();
-        }
+        // Thread starter special treatment
+        if (queryLoc.getBlockZ() == 1) return List.of();
 
         Location end = CodeBlockManagement.findCodeEnd(queryLoc.clone());
         Location location = queryLoc.clone().set(queryLoc.getBlockX(), queryLoc.getBlockY(), 1);
 
         while (location.getBlockZ() <= end.getBlockZ() + 5) { // +5 for extra padding
-            if (location.getBlockZ() == queryLoc.getBlockZ()) {
-                return trace;
-            }
+            if (location.getBlockZ() == queryLoc.getBlockZ()) return trace;
 
             if (location.getBlock().getType() == Material.STONE || location.getBlock().getType() == Material.AIR) {
                 location.add(0, 0, 1);
@@ -225,7 +230,7 @@ public class CodeFileHelper {
 
             if (location.getBlock().getType() != Material.PISTON && location.getBlock().getType() != Material.STICKY_PISTON) {
                 CodeBlocks codeblock = CodeBlocks.getByMaterial(location.getBlock().getType());
-                if (codeblock != null && !(codeblock.hasBrackets() || codeblock.isThreadStarter())) {
+                if (codeblock != null && !(codeblock.hasBrackets || codeblock.isThreadStarter)) {
                     trace.set(trace.size() - 1, trace.get(trace.size() - 1) + 1); // ^ Skip the bracket codeblock or the thread starter
                 }
                 location.add(0, 0, 1);
@@ -247,10 +252,19 @@ public class CodeFileHelper {
         throw new Exception("Somehow never reached the query location");
     }
 
-    public static CodeActionData getActionAt(Location location, CodeData data) {
+    public static @Nullable CodeLineData getLineAt(@NotNull Location location, CodeData data) {
         int codelineIndex = CodeFileHelper.getCodelineListIndex(location, data);
         if (codelineIndex < 0 || codelineIndex >= data.codelines.size()) return null;
-        CodeLineData line = data.codelines.get(codelineIndex);
+        return data.codelines.get(codelineIndex);
+    }
+
+    public static @Nullable CodeActionData getActionAt(@NotNull Location location, CodeData data) {
+        CodeLineData line = getLineAt(location, data);
+        return getActionAt(location, line);
+    }
+
+    public static @Nullable CodeActionData getActionAt(@NotNull Location location, CodeLineData line) {
+        if (line == null) return null;
         try {
             List<Integer> positions = CodeFileHelper.findCodeIndex(location);
 
@@ -268,4 +282,21 @@ public class CodeFileHelper {
         }
     }
 
+    public static @Nullable ArgumentsData getArgsDataAt(@NotNull Location location, CodeData data) {
+        CodeBlocks codeblock = CodeBlocks.getByMaterial(location.getBlock().getType());
+        if (codeblock == null || !codeblock.hasBarrel) return null;
+        CodeLineData line = getLineAt(location, data);
+        CodeActionData action = getActionAt(location, line);
+        return action != null ? action : line;
+    }
+
+    public static @Nullable TagOptionsData getTagsDataAt(@NotNull Location location, CodeData data) {
+        ArgumentsData argsData = getArgsDataAt(location, data);
+        if (argsData == null) return null;
+        try {
+            return (TagOptionsData) argsData;
+        } catch (Exception _) {
+            return null;
+        }
+    }
 }

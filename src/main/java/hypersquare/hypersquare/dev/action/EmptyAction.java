@@ -1,27 +1,34 @@
 package hypersquare.hypersquare.dev.action;
 
+import hypersquare.hypersquare.dev.BarrelParameter;
+import hypersquare.hypersquare.dev.BarrelTag;
 import hypersquare.hypersquare.dev.codefile.data.CodeActionData;
-import hypersquare.hypersquare.item.Action;
-import hypersquare.hypersquare.item.PlayerActionItems;
-import hypersquare.hypersquare.menu.actions.ActionMenu;
-import org.bukkit.block.Barrel;
-import org.bukkit.entity.Entity;
+import hypersquare.hypersquare.item.action.ActionMenuItem;
+import hypersquare.hypersquare.menu.barrel.BarrelMenu;
+import hypersquare.hypersquare.play.CodeSelection;
+import hypersquare.hypersquare.play.execution.ExecutionContext;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public class EmptyAction implements Action {
     @Override
-    public void executeBlockAction(List<Entity> targets, Barrel barrel) {}
-
-    @Override
-    public ActionParameter[] parameters() {
+    public BarrelParameter[] parameters() {
         return null;
     }
 
     @Override
+    public BarrelTag[] tags() {
+        return new BarrelTag[]{};
+    }
+
+    @Override
     public String getId() {
-        return null;
+        return "empty";
+    }
+
+    @Override
+    public String getCodeblockId() {
+        return "";
     }
 
     @Override
@@ -35,7 +42,7 @@ public class EmptyAction implements Action {
     }
 
     @Override
-    public PlayerActionItems getCategory() {
+    public ActionMenuItem getCategory() {
         return null;
     }
 
@@ -45,7 +52,12 @@ public class EmptyAction implements Action {
     }
 
     @Override
-    public ActionMenu actionMenu(CodeActionData data) {
-        return new ActionMenu(this, 3, data);
+    public BarrelMenu actionMenu(CodeActionData data) {
+        return new BarrelMenu(this, 3, data);
+    }
+
+    @Override
+    public void execute(@NotNull ExecutionContext ctx, @NotNull CodeSelection targetSel) {
+
     }
 }

@@ -2,14 +2,18 @@ package hypersquare.hypersquare.plot;
 
 import com.infernalsuite.aswm.api.SlimePlugin;
 import com.infernalsuite.aswm.api.world.SlimeWorld;
+import hypersquare.hypersquare.HSKeys;
 import hypersquare.hypersquare.Hypersquare;
+import hypersquare.hypersquare.util.LocationInitializer;
+import hypersquare.hypersquare.util.PlotUtilities;
 import hypersquare.hypersquare.util.Utilities;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 
 public class MoveEntities {
     public static Location basic = null;
@@ -19,70 +23,63 @@ public class MoveEntities {
     public static Location gigantic = null;
     public static Location commonStart = null;
 
-    public static void commonVars(Location location) {
-        basic = new Location(location.getWorld(), 64, -640, 64);
-        large = new Location(location.getWorld(), 128, -640, 128);
-        huge = new Location(location.getWorld(), 256, -640, 256);
-        massive = new Location(location.getWorld(), 512, -640, 512);
-        gigantic = new Location(location.getWorld(), 1024, -640, 1024);
-        commonStart = new Location(location.getWorld(), -20, 255, 0);
+    public static void commonVars(@NotNull Location location) {
+        World world = location.getWorld();
+        basic = LocationInitializer.getBasicLocation(world);
+        large = LocationInitializer.getLargeLocation(world);
+        huge = LocationInitializer.getHugeLocation(world);
+        massive = LocationInitializer.getMassiveLocation(world);
+        gigantic = LocationInitializer.getGiganticLocation(world);
+        commonStart = LocationInitializer.getCommonStartLocation(world);
     }
 
     public static void entityLoop() {
         SlimePlugin plugin = Hypersquare.slimePlugin;
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Hypersquare.instance, new Runnable() {
-            public void run() {
+        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Hypersquare.instance, () -> {
+            assert plugin != null;
+            for (SlimeWorld world : plugin.getLoadedWorlds()) {
+                World bukkitWorld = Bukkit.getWorld(world.getName());
+                if (bukkitWorld == null) return;
+                for (Entity entity : bukkitWorld.getEntities()) {
+                    if (entity == null) return;
+                    if (entity.getType() != EntityType.PLAYER) {
+                        commonVars(entity.getLocation());
+                        String plotType = (entity).getWorld().getPersistentDataContainer().get(HSKeys.PLOT_TYPE, PersistentDataType.STRING);
+                        if (plotType == null) return;
 
-                assert plugin != null;
-                for (SlimeWorld world : plugin.getLoadedWorlds()) {
-                    if (Bukkit.getWorld(world.getName()) == null) {
-                        return;
-                    }
-                    for (Entity entity : Bukkit.getWorld(world.getName()).getEntities()) {
-                        if (entity == null) {
-                            return;
-                        }
-                        if (entity.getType() != EntityType.PLAYER) {
-                            commonVars(entity.getLocation());
-                            String plotType = (entity).getWorld().getPersistentDataContainer().get(new NamespacedKey(Hypersquare.instance, "plotType"), PersistentDataType.STRING);
-                            if (plotType == null) {
-                                return;
+                        switch (plotType) {
+
+                            case "Basic": {
+                                if (Utilities.notWithinLocation(entity.getLocation(), commonStart, basic)) {
+                                    PlotUtilities.moveEntityInsidePlot(entity, commonStart, basic);
+                                }
+                                break;
+                            }
+                            case "Large": {
+                                if (Utilities.notWithinLocation(entity.getLocation(), commonStart, large)) {
+                                    PlotUtilities.moveEntityInsidePlot(entity, commonStart, large);
+                                }
+                                break;
+                            }
+                            case "Huge": {
+                                if (Utilities.notWithinLocation(entity.getLocation(), commonStart, huge)) {
+                                    PlotUtilities.moveEntityInsidePlot(entity, commonStart, huge);
+                                }
+                                break;
+                            }
+                            case "Massive": {
+                                if (Utilities.notWithinLocation(entity.getLocation(), commonStart, massive)) {
+                                    PlotUtilities.moveEntityInsidePlot(entity, commonStart, massive);
+                                }
+                                break;
+                            }
+                            case "Gigantic": {
+                                if (Utilities.notWithinLocation(entity.getLocation(), commonStart, gigantic)) {
+                                    PlotUtilities.moveEntityInsidePlot(entity, commonStart, gigantic);
+                                }
+                                break;
                             }
 
-                            switch (plotType) {
-
-                                case "Basic": {
-                                    if (!Utilities.locationWithin(entity.getLocation(), commonStart.clone().add(20, 0, 0), basic)) {
-                                        Utilities.moveEntityInsidePlot(entity, commonStart.clone().add(20, 0, 0), basic);
-                                    }
-                                    break;
-                                }
-                                case "Large": {
-                                    if (!Utilities.locationWithin(entity.getLocation(), commonStart.clone().add(20, 0, 0), large)) {
-                                        Utilities.moveEntityInsidePlot(entity, commonStart.clone().add(20, 0, 0), large);
-                                    }
-                                    break;
-                                }
-                                case "Huge": {
-                                    if (!Utilities.locationWithin(entity.getLocation(), commonStart.clone().add(20, 0, 0), huge)) {
-                                        Utilities.moveEntityInsidePlot(entity, commonStart.clone().add(20, 0, 0), huge);
-                                    }
-                                    break;
-                                }
-                                case "Massive": {
-                                    if (!Utilities.locationWithin(entity.getLocation(), commonStart.clone().add(20, 0, 0), massive)) {
-                                        Utilities.moveEntityInsidePlot(entity, commonStart.clone().add(20, 0, 0), massive);
-                                    }
-                                    break;
-                                }
-                                case "Gigantic": {
-                                    if (!Utilities.locationWithin(entity.getLocation(), commonStart.clone().add(20, 0, 0), gigantic)) {
-                                        Utilities.moveEntityInsidePlot(entity, commonStart.clone().add(20, 0, 0), gigantic);
-                                    }
-                                    break;
-                                }
-
-                            }
                         }
                     }
                 }

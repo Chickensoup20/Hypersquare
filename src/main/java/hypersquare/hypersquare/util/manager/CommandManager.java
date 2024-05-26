@@ -13,21 +13,20 @@ public class CommandManager {
 
     public static void registerCommands() {
         register(
-                new FlyCommand(),
-                new BuildCommand(),
-                new DebugCommand(),
-                new DeleteAllPlotsCommand(),
-                new DevCommand(),
-                new EditSpawn(),
-                new FlightSpeedCommand(),
-                new GivePlotsCommand(),
-                new JoinCommand(),
-                new LocateCommand(),
-                new PlayCommand(),
-                new SpawnCommand(),
-                new PlotCommands(),
-                new ValueCommands(),
-                new ColorPaletteCommand()
+            new FlyCommand(),
+            new BuildCommand(),
+            new DeleteAllPlotsCommand(),
+            new DevCommand(),
+            new EditSpawn(),
+            new FlightSpeedCommand(),
+            new GivePlotsCommand(),
+            new JoinCommand(),
+            new LocateCommand(),
+            new PlayCommand(),
+            new SpawnCommand(),
+            new PlotCommands(),
+            new ValueCommands(),
+            new ColorPaletteCommand()
         );
     }
 

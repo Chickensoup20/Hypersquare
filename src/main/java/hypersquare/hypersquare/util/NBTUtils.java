@@ -1,12 +1,12 @@
 package hypersquare.hypersquare.util;
 
 import com.flowpowered.nbt.CompoundMap;
-import com.google.common.collect.Maps;
 import net.minecraft.nbt.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bukkit.craftbukkit.v1_20_R3.persistence.CraftPersistentDataContainer;
 import org.bukkit.persistence.PersistentDataContainer;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,42 +27,31 @@ public class NBTUtils {
 
         private static final Logger LOGGER = LogManager.getLogger("SB NBT Converter");
 
-        public static Tag convertTag(com.flowpowered.nbt.Tag<?> tag) {
+        public static @NotNull Tag convertTag(com.flowpowered.nbt.Tag<?> tag) {
             try {
-                switch (tag.getType()) {
-                    case TAG_BYTE:
-                        return ByteTag.valueOf(((com.flowpowered.nbt.ByteTag) tag).getValue());
-                    case TAG_SHORT:
-                        return ShortTag.valueOf(((com.flowpowered.nbt.ShortTag) tag).getValue());
-                    case TAG_INT:
-                        return IntTag.valueOf(((com.flowpowered.nbt.IntTag) tag).getValue());
-                    case TAG_LONG:
-                        return LongTag.valueOf(((com.flowpowered.nbt.LongTag) tag).getValue());
-                    case TAG_FLOAT:
-                        return FloatTag.valueOf(((com.flowpowered.nbt.FloatTag) tag).getValue());
-                    case TAG_DOUBLE:
-                        return DoubleTag.valueOf(((com.flowpowered.nbt.DoubleTag) tag).getValue());
-                    case TAG_BYTE_ARRAY:
-                        return new ByteArrayTag(((com.flowpowered.nbt.ByteArrayTag) tag).getValue());
-                    case TAG_STRING:
-                        return StringTag.valueOf(((com.flowpowered.nbt.StringTag) tag).getValue());
-                    case TAG_LIST:
+                return switch (tag.getType()) {
+                    case TAG_BYTE -> ByteTag.valueOf(((com.flowpowered.nbt.ByteTag) tag).getValue());
+                    case TAG_SHORT -> ShortTag.valueOf(((com.flowpowered.nbt.ShortTag) tag).getValue());
+                    case TAG_INT -> IntTag.valueOf(((com.flowpowered.nbt.IntTag) tag).getValue());
+                    case TAG_LONG -> LongTag.valueOf(((com.flowpowered.nbt.LongTag) tag).getValue());
+                    case TAG_FLOAT -> FloatTag.valueOf(((com.flowpowered.nbt.FloatTag) tag).getValue());
+                    case TAG_DOUBLE -> DoubleTag.valueOf(((com.flowpowered.nbt.DoubleTag) tag).getValue());
+                    case TAG_BYTE_ARRAY -> new ByteArrayTag(((com.flowpowered.nbt.ByteArrayTag) tag).getValue());
+                    case TAG_STRING -> StringTag.valueOf(((com.flowpowered.nbt.StringTag) tag).getValue());
+                    case TAG_LIST -> {
                         net.minecraft.nbt.ListTag list = new net.minecraft.nbt.ListTag();
                         ((com.flowpowered.nbt.ListTag<?>) tag).getValue().stream().map(Converter::convertTag).forEach(list::add);
-
-                        return list;
-                    case TAG_COMPOUND:
+                        yield list;
+                    }
+                    case TAG_COMPOUND -> {
                         CompoundTag compound = new CompoundTag();
-
                         ((com.flowpowered.nbt.CompoundTag) tag).getValue().forEach((key, value) -> compound.put(key, convertTag(value)));
-                        return compound;
-                    case TAG_INT_ARRAY:
-                        return new IntArrayTag(((com.flowpowered.nbt.IntArrayTag) tag).getValue());
-                    case TAG_LONG_ARRAY:
-                        return new LongArrayTag(((com.flowpowered.nbt.LongArrayTag) tag).getValue());
-                    default:
-                        throw new IllegalArgumentException("Invalid tag type " + tag.getType().name());
-                }
+                        yield compound;
+                    }
+                    case TAG_INT_ARRAY -> new IntArrayTag(((com.flowpowered.nbt.IntArrayTag) tag).getValue());
+                    case TAG_LONG_ARRAY -> new LongArrayTag(((com.flowpowered.nbt.LongArrayTag) tag).getValue());
+                    default -> throw new IllegalArgumentException("Invalid tag type " + tag.getType().name());
+                };
             } catch (Exception var3) {
                 LOGGER.error("Failed to convert NBT object:");
                 LOGGER.error(tag.toString());
@@ -121,14 +110,6 @@ public class NBTUtils {
             nbtMap.forEach((key, obj) -> data.put(key, Converter.convertTag(key, obj)));
 
             return data;
-        }
-
-        public static Map<String, Tag> convertMap(CompoundMap map) {
-            Map<String, Tag> nbtMap = Maps.newHashMap();
-
-            map.forEach((key, tag) -> nbtMap.put(key, Converter.convertTag(tag)));
-
-            return nbtMap;
         }
     }
 }

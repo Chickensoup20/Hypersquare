@@ -3,6 +3,7 @@ package hypersquare.hypersquare.dev.value.impl;
 import com.google.gson.JsonObject;
 import hypersquare.hypersquare.Hypersquare;
 import hypersquare.hypersquare.dev.value.CodeValue;
+import hypersquare.hypersquare.item.value.DisplayValue;
 import hypersquare.hypersquare.util.component.BasicComponent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -14,7 +15,7 @@ import java.util.List;
 public class StringValue implements CodeValue<String, String> {
     @Override
     public Component getName() {
-        return Component.text("String").color(NamedTextColor.AQUA);
+        return Component.text("String").color(DisplayValue.STRING.color);
     }
 
     @Override
@@ -35,18 +36,18 @@ public class StringValue implements CodeValue<String, String> {
     @Override
     public List<Component> getDescription() {
         return List.of(
-                BasicComponent.gray("A series of characters which"),
-                BasicComponent.gray("is highly manipulatable."),
-                BasicComponent.gray("Recommended for variable"),
-                BasicComponent.gray("operations")
+            BasicComponent.gray("A series of characters which"),
+            BasicComponent.gray("is highly manipulatable."),
+            BasicComponent.gray("Recommended for variable"),
+            BasicComponent.gray("operations")
         );
     }
 
     public List<Component> getHowToSet() {
         return List.of(
-                BasicComponent.gray("Type in chat while holding"),
-                BasicComponent.gray("this item."),
-                Hypersquare.cleanMM.deserialize("<!italic><gray>E.g. '<white>Sample Text</white>'")
+            BasicComponent.gray("Type in chat while holding"),
+            BasicComponent.gray("this item."),
+            Hypersquare.cleanMM.deserialize("<!italic><gray>E.g. '<white>Sample Text</white>'")
         );
     }
 
@@ -71,11 +72,19 @@ public class StringValue implements CodeValue<String, String> {
     @Override
     public Component getValueName(String value) {
         return Component.text(value).color(NamedTextColor.WHITE)
-                .decoration(TextDecoration.ITALIC, false);
+            .decoration(TextDecoration.ITALIC, false);
     }
 
     @Override
     public String realValue(String value) {
         return value;
+    }
+
+    @Override
+    public JsonObject serialize(Object obj) {
+        if (obj instanceof String str) {
+            return getVarItemData(str);
+        }
+        return null;
     }
 }

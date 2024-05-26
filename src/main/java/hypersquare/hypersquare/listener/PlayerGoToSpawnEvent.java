@@ -12,11 +12,12 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class PlayerGoToSpawnEvent implements Listener {
 
     @EventHandler
-    public void damagePlayer(EntityDamageByEntityEvent event) {
+    public void damagePlayer(@NotNull EntityDamageByEntityEvent event) {
         if (event.getDamager().getType() == EntityType.PLAYER) {
             Player player = (Player) event.getDamager();
             if (Hypersquare.mode.get(player).equals("at spawn")) {
@@ -26,7 +27,7 @@ public class PlayerGoToSpawnEvent implements Listener {
     }
 
     @EventHandler
-    public void playerTakeDamage(EntityDamageEvent event) {
+    public void playerTakeDamage(@NotNull EntityDamageEvent event) {
         if (event.getEntity().getType() == EntityType.PLAYER) {
             Player player = (Player) event.getEntity();
             if (Hypersquare.mode.get(player).equals("at spawn")) {

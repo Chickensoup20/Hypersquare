@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ColorPaletteCommand implements HyperCommand {
-    String square = "█";
+    final String square = "█";
 
     @NotNull
     private static List<String> getColorGroups(Field[] fields) {
@@ -39,52 +39,52 @@ public class ColorPaletteCommand implements HyperCommand {
     public void register(CommandDispatcher<CommandSourceStack> cd) {
         for (String alias : List.of("colorpalette", "palette", "colorpal"))
             cd.register(literal(alias)
-                    .executes(ctx -> {
-                        CommandSender sender = ctx.getSource().getBukkitSender();
-                        if (sender instanceof Player player) {
-                            Component finalMessage = Component.empty();
+                .executes(ctx -> {
+                    CommandSender sender = ctx.getSource().getBukkitSender();
+                    if (sender instanceof Player player) {
+                        Component finalMessage = Component.empty();
 
-                            finalMessage = finalMessage.append(
-                                    Component.text("◀ ")
-                                            .color(TextColor.color(Colors.SKY))
-                                            .append(Component.text(" ".repeat(8))
-                                                    .color(Colors.SKY_DARK)
-                                                    .decoration(TextDecoration.STRIKETHROUGH, true)
-                                            )
-                                            .append(Component.text(" COLOR PALETTE ")
-                                                    .color(Colors.SKY_LIGHT))
-                                            .append(Component.text(" ".repeat(8))
-                                                    .color(Colors.SKY_DARK)
-                                                    .decoration(TextDecoration.STRIKETHROUGH, true)
-                                            )
-                                            .append(Component.text(" ▶"))
-                            );
+                        finalMessage = finalMessage.append(
+                            Component.text("◀ ")
+                                .color(TextColor.color(Colors.SKY))
+                                .append(Component.text(" ".repeat(8))
+                                    .color(Colors.SKY_DARK)
+                                    .decoration(TextDecoration.STRIKETHROUGH, true)
+                                )
+                                .append(Component.text(" COLOR PALETTE ")
+                                    .color(Colors.SKY_LIGHT))
+                                .append(Component.text(" ".repeat(8))
+                                    .color(Colors.SKY_DARK)
+                                    .decoration(TextDecoration.STRIKETHROUGH, true)
+                                )
+                                .append(Component.text(" ▶"))
+                        );
 
-                            Field[] fields = Colors.class.getFields();
-                            List<String> colorGroups = getColorGroups(fields);
+                        Field[] fields = Colors.class.getFields();
+                        List<String> colorGroups = getColorGroups(fields);
 
-                            for (String colorGroup : colorGroups) {
-                                finalMessage = finalMessage.appendNewline();
-                                finalMessage = finalMessage.append(Component.text("  ").append(generateColorStrip(colorGroup, fields)));
-                            }
-
+                        for (String colorGroup : colorGroups) {
                             finalMessage = finalMessage.appendNewline();
-                            finalMessage = finalMessage.append(
-                                    Component.text("◀ ")
-                                            .color(TextColor.color(Colors.SKY))
-                                            .append(Component.text(" ".repeat(37))
-                                                    .color(Colors.SKY_DARK)
-                                                    .decoration(TextDecoration.STRIKETHROUGH, true)
-                                            )
-                                            .append(Component.text(" ▶"))
-                            );
-
-                            player.sendMessage(finalMessage);
-                        } else {
-                            sender.sendMessage("This command can only be used by players.");
+                            finalMessage = finalMessage.append(Component.text("  ").append(generateColorStrip(colorGroup, fields)));
                         }
-                        return DONE;
-                    })
+
+                        finalMessage = finalMessage.appendNewline();
+                        finalMessage = finalMessage.append(
+                            Component.text("◀ ")
+                                .color(TextColor.color(Colors.SKY))
+                                .append(Component.text(" ".repeat(37))
+                                    .color(Colors.SKY_DARK)
+                                    .decoration(TextDecoration.STRIKETHROUGH, true)
+                                )
+                                .append(Component.text(" ▶"))
+                        );
+
+                        player.sendMessage(finalMessage);
+                    } else {
+                        sender.sendMessage("This command can only be used by players.");
+                    }
+                    return DONE;
+                })
             );
     }
 
@@ -110,23 +110,23 @@ public class ColorPaletteCommand implements HyperCommand {
             TextColor color = (TextColor) field.get(null);
             String colorTag = "<" + color.asHexString() + ">";
             return Component.text(this.square)
-                    .color(color)
-                    .hoverEvent(
-                            Component.text(WordUtils.capitalize(field.getName().replace('_', ' ').toLowerCase()))
-                                    .color(TextColor.color(color))
-                                    .append(Component.text(" - ")
-                                            .color(Colors.GRAY))
-                                    .append(Component.text(color.asHexString()))
-                                    .appendNewline()
-                                    .append(Component.text("Click to copy")
-                                            .color(Colors.GRAY_DARK))
-                                    .appendNewline()
-                                    .append(Component.text("Shift-click to insert")
-                                            .color(Colors.GRAY_DARK))
-                                    .decoration(TextDecoration.ITALIC, false)
-                    )
-                    .clickEvent(ClickEvent.copyToClipboard(colorTag))
-                    .insertion(colorTag);
+                .color(color)
+                .hoverEvent(
+                    Component.text(WordUtils.capitalize(field.getName().replace('_', ' ').toLowerCase()))
+                        .color(TextColor.color(color))
+                        .append(Component.text(" - ")
+                            .color(Colors.GRAY))
+                        .append(Component.text(color.asHexString()))
+                        .appendNewline()
+                        .append(Component.text("Click to copy")
+                            .color(Colors.GRAY_DARK))
+                        .appendNewline()
+                        .append(Component.text("Shift-click to insert")
+                            .color(Colors.GRAY_DARK))
+                        .decoration(TextDecoration.ITALIC, false)
+                )
+                .clickEvent(ClickEvent.copyToClipboard(colorTag))
+                .insertion(colorTag);
         } catch (IllegalAccessException ignored) {
             return Component.empty();
         }

@@ -4,5 +4,4 @@ main: hypersquare.hypersquare.Hypersquare
 api-version: 1.20
 
 depend:
-  - NBTAPI
   - LuckPerms

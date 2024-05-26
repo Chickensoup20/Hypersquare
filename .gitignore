@@ -101,7 +101,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-target/
+/target
 
 pom.xml.tag
 pom.xml.releaseBackup
@@ -127,7 +127,6 @@ tmp/
 *.swp
 *~.nib
 local.properties
-.settings/
 .loadpath
 .recommenders
 

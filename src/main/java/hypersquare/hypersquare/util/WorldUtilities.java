@@ -3,6 +3,7 @@ package hypersquare.hypersquare.util;
 import com.infernalsuite.aswm.api.exceptions.*;
 import com.infernalsuite.aswm.api.loaders.SlimeLoader;
 import com.infernalsuite.aswm.api.world.SlimeWorld;
+import com.infernalsuite.aswm.api.world.properties.SlimeProperties;
 import com.infernalsuite.aswm.api.world.properties.SlimePropertyMap;
 import hypersquare.hypersquare.Hypersquare;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -15,6 +16,7 @@ public class WorldUtilities {
     public static void cloneWorld(String templateName, String newName, Consumer<SlimeWorld> callback) {
         new Thread(() -> {
             SlimePropertyMap properties = new SlimePropertyMap();
+            properties.setValue(SlimeProperties.DIFFICULTY, "easy");
             SlimeWorld world;
             SlimeLoader file = Hypersquare.slimePlugin.getLoader("mongodb");
 

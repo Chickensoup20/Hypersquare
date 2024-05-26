@@ -11,21 +11,21 @@ public class FlyCommand implements HyperCommand {
     @Override
     public void register(CommandDispatcher<CommandSourceStack> cd) {
         cd.register(literal("fly")
-                .executes(ctx -> {
-                    CommandSender sender = ctx.getSource().getBukkitSender();
-                    if (sender instanceof Player player) {
-                        if (player.getAllowFlight()) {
-                            player.setAllowFlight(false);
-                            Utilities.sendInfo(player, Component.text("Flight disabled."));
-                        } else {
-                            player.setAllowFlight(true);
-                            Utilities.sendInfo(player, Component.text("Flight enabled."));
-                        }
+            .executes(ctx -> {
+                CommandSender sender = ctx.getSource().getBukkitSender();
+                if (sender instanceof Player player) {
+                    if (player.getAllowFlight()) {
+                        player.setAllowFlight(false);
+                        Utilities.sendInfo(player, Component.text("Flight disabled."));
                     } else {
-                        sender.sendMessage("This command can only be used by players.");
+                        player.setAllowFlight(true);
+                        Utilities.sendInfo(player, Component.text("Flight enabled."));
                     }
-                    return DONE;
-                })
+                } else {
+                    sender.sendMessage("This command can only be used by players.");
+                }
+                return DONE;
+            })
         );
     }
 }

@@ -2,10 +2,12 @@ package hypersquare.hypersquare.dev.codefile;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
+import hypersquare.hypersquare.HSKeys;
 import hypersquare.hypersquare.Hypersquare;
 import hypersquare.hypersquare.dev.codefile.data.CodeData;
+import hypersquare.hypersquare.util.PlotUtilities;
 import hypersquare.hypersquare.util.Utilities;
-import org.bukkit.NamespacedKey;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
@@ -15,17 +17,18 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.zip.Deflater;
 
-public class CodeFile {
-    public World world;
-    public Player player;
+public record CodeFile(World world, int plotId) {
 
     public CodeFile(World world) {
-        this.world = world;
+        this(world, PlotUtilities.getPlotId(world));
+    }
+
+    public CodeFile(int plotId) {
+        this(Bukkit.getWorld("hs.code." + plotId), plotId);
     }
 
     public CodeFile(Player player) {
-        this.player = player;
-        this.world = player.getWorld();
+        this(player.getWorld());
     }
 
     public CodeData getCodeData() {
@@ -33,17 +36,17 @@ public class CodeFile {
         JsonArray array = JsonParser.parseString(code).getAsJsonArray();
 
         if (!array.isJsonNull() && !array.isEmpty()) return new CodeData(array);
-            else return new CodeData(new JsonArray());
+        else return new CodeData(new JsonArray());
     }
 
     public String getCode() {
-        String code = world.getPersistentDataContainer().get(new NamespacedKey(Hypersquare.instance, "code"), PersistentDataType.STRING);
+        String code = world.getPersistentDataContainer().get(HSKeys.CODE, PersistentDataType.STRING);
         assert code != null;
         return code;
     }
 
     public void setCode(String newCode) {
-        world.getPersistentDataContainer().set(new NamespacedKey(Hypersquare.instance, "code"), PersistentDataType.STRING, newCode);
+        world.getPersistentDataContainer().set(HSKeys.CODE, PersistentDataType.STRING, newCode);
         Utilities.savePersistentData(world, Hypersquare.slimePlugin);
     }
 
